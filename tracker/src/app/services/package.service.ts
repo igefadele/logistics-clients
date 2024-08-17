@@ -12,6 +12,10 @@ export class PackageService {
 
   // Fetch package details by ID
   getPackageById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${id}`);
+    const response = this.http.get<any>(`${this.baseUrl}/${id}`);
+    return response;
   }
 }
+
+
+

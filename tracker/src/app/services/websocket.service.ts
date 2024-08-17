@@ -9,7 +9,7 @@ export class WebSocketService {
   private socket: Socket;
 
   constructor() {
-    // Connect to the WebSocket server
+    // Connect to the API WebSocket server
     this.socket = io('http://localhost:3000');
   }
 

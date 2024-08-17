@@ -34,13 +34,15 @@ export class TrackerComponent implements OnInit {
   trackPackage() {
     if (!this.packageId) return;
 
-    this.packageService.getPackageById(this.packageId).subscribe((data) => {
-      this.packageDetails = data;
+    this.packageService.getPackageById(this.packageId).subscribe((response) => {
+      this.packageDetails = response.data;
+      const packageData = response.data;
 
-      if (data.active_delivery_id) {
+      if (packageData.active_delivery_id) {
         this.deliveryService
-          .getDeliveryById(data.active_delivery_id)
-          .subscribe((deliveryData) => {
+          .getDeliveryById(packageData.active_delivery_id)
+          .subscribe((deliveryResponse) => {
+            const deliveryData = deliveryResponse.data;
             this.deliveryDetails = deliveryData;
             this.updateMap(deliveryData.location);
             this.listenForUpdates(deliveryData.delivery_id);
@@ -86,3 +88,21 @@ export class TrackerComponent implements OnInit {
     });
   }
 }
+
+
+
+/*
+Package
+_id: 66bf44d477da7bd5fc27c0c0
+package_id: f3f68498-eb05-4214-b87d-aadfd7168fcc
+active_delivery_id: 95ca4f3d-7792-4b76-804c-b6a23d59e31f
+
+*/
+
+
+/*
+Delivery
+_id: 66bf48f4c34faeb00856f3d4
+delivery_id: 95ca4f3d-7792-4b76-804c-b6a23d59e31f
+package_id: f3f68498-eb05-4214-b87d-aadfd7168fcc
+*/

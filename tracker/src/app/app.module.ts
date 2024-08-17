@@ -4,15 +4,15 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { TrackerComponent } from './tracker/tracker.component';  // Add TrackerComponent
-import { PackageService } from './services/package.service';     // Add PackageService
-import { DeliveryService } from './services/delivery.service';   // Add DeliveryService
-import { WebSocketService } from './services/websocket.service'; // Add WebSocketService
+import { TrackerComponent } from './tracker/tracker.component';
+import { PackageService } from './services/package.service';
+import { DeliveryService } from './services/delivery.service';
+import { WebSocketService } from './services/websocket.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TrackerComponent  // Declare TrackerComponent
+    TrackerComponent
   ],
   imports: [
     BrowserModule,
