@@ -1,0 +1,25 @@
+<div class="tracker-container">
+  <h1>Track Your Package</h1>
+  <input
+    type="text"
+    [(ngModel)]="packageId"
+    placeholder="Enter Package ID"
+    (keyup.enter)="trackPackage()"
+  />
+  <button (click)="trackPackage()">Track</button>
+
+  <div *ngIf="packageDetails">
+    <h2>Package Details</h2>
+    <p><strong>ID:</strong> {{ packageDetails.package_id }}</p>
+    <p><strong>Description:</strong> {{ packageDetails.description }}</p>
+    <!-- Add more package details here -->
+
+    <div *ngIf="deliveryDetails">
+      <h2>Delivery Details</h2>
+      <p><strong>Status:</strong> {{ deliveryDetails.status }}</p>
+      <!-- Add more delivery details here -->
+    </div>
+
+    <div id="map" style="height: 400px;"></div>
+  </div>
+</div>
