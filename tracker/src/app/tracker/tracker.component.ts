@@ -1,10 +1,27 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PackageService } from '../services/package.service';
 import { DeliveryService } from '../services/delivery.service';
 import { WebSocketService } from '../services/websocket.service';
 import * as L from 'leaflet';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+
+const iconRetinaUrl = 'assets/marker-icon-2x.png';
+const iconUrl = 'assets/marker-icon.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = L.icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+L.Marker.prototype.options.icon = iconDefault;
+
 
 @Component({
   selector: 'app-tracker',
@@ -18,6 +35,7 @@ export class TrackerComponent implements OnInit {
   packageDetails: any;
   deliveryDetails: any;
   map: any;
+  markers: { [key: string]: L.Marker } = {};
   errorMessage: string = '';
 
   constructor(
@@ -25,12 +43,11 @@ export class TrackerComponent implements OnInit {
     private deliveryService: DeliveryService,
     private webSocketService: WebSocketService,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
   ) {}
 
-  ngOnInit(): void {
-    this.initializeMap();
-  }
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {}
 
   // Fetch package and delivery details
   trackPackage() {
@@ -46,18 +63,19 @@ export class TrackerComponent implements OnInit {
 
     this.packageService.getPackageById(this.packageId).subscribe((response) => {
       if (response.data) {
-        this.packageDetails = response.data;
         const packageData = response.data;
+        this.packageDetails = packageData;
+        this.initializeMap(packageData.from_location, packageData.to_location);
+        //this.initializeMap();
 
         if (packageData.active_delivery_id) {
           this.deliveryService.getDeliveryById(packageData.active_delivery_id).subscribe((deliveryResponse) => {
             if (deliveryResponse.data) {
               const deliveryData = deliveryResponse.data;
               this.deliveryDetails = deliveryData;
-              //this.updateMap(deliveryData.location);
-              console.log('Starting to listen for updates for delivery ID:', deliveryData.delivery_id);
-
+              this.updateMap(deliveryData.location);
               this.listenForUpdates(deliveryData.delivery_id);
+              this.cdr.detectChanges();
             } else {
               this.errorMessage = 'No delivery data found for active delivery ID';
              }
@@ -72,43 +90,67 @@ export class TrackerComponent implements OnInit {
   }
 
 
-  // Initialize the map
-  initializeMap() {
-    // To set initial view
+  // Initialize the map and add markers for from_location and to_location
+  initializeMap(fromLocation: { lat: number; lng: number; }, toLocation: { lat: number; lng: number; }) {
+    // Set initial view
     this.map = L.map('map').setView([0, 0], 2);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(this.map);
+
+    this.addMarker(fromLocation, 'From Location', 'from_location');
+    this.addMarker(toLocation, 'To Location', 'to_location');
   }
 
-  // Update the map with the delivery location
-  updateMap(location: { lat: number; lng: number }) {
-    this.map.setView([location.lat, location.lng], 13);
-    L.marker([location.lat, location.lng]).addTo(this.map);
+   /*  initializeMap() {
+      this.map = L.map('map').setView([0, 0], 2); // Set initial view
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+      }).addTo(this.map);
+
+      // Add from_location marker
+      const fromLocation = { lat: 37.7749, lng: -122.4194 };
+      this.addMarker(fromLocation, 'From Location', 'from_location');
+
+      // Add to_location marker
+      const toLocation = { lat: 40.7118, lng: -84.016 };
+      this.addMarker(toLocation, 'To Location', 'to_location');
+    } */
+
+
+  // Add a marker to the map and save it in the markers object
+  addMarker(location: { lat: number; lng: number }, title: string, key: string) {
+    const marker = L.marker([location.lat, location.lng]).addTo(this.map)
+      .bindPopup(title)
+      .openPopup();
+    this.markers[key] = marker;
   }
+
+
+  // Update the map with the current delivery location
+  updateMap(location: { lat: number; lng: number }) {
+    if (this.markers['current_location']) {
+      this.map.removeLayer(this.markers['current_location']);
+    }
+
+    const marker = L.marker([location.lat, location.lng]).addTo(this.map)
+      .bindPopup('Current Location')
+      .openPopup();
+
+    this.markers['current_location'] = marker;
+    this.map.setView([location.lat, location.lng], 13); // Optionally, center the map on the current location
+  }
+
 
   // Listen for WebSocket updates
   listenForUpdates(deliveryId: string) {
-    console.log('listenForUpdates: Called!!!');
-    this.webSocketService.onEvent('location_changed').subscribe((event) => {
-      if (event.delivery_id === deliveryId) {
-        this.updateMap(event.location);
-        this.cdr.detectChanges();
-      }
-    });
-
-    this.webSocketService.onEvent('status_changed').subscribe((event) => {
-      if (event.delivery_id === deliveryId) {
-        this.deliveryDetails.status = event.status;
-        this.cdr.detectChanges();
-      }
-    });
-
     this.webSocketService.onEvent('delivery_updated').subscribe((payload) => {
       if (payload.delivery_object.delivery_id === deliveryId) {
         this.deliveryDetails = payload.delivery_object;
-        this.updateMap(payload.delivery_object.location);
+        const currentLocation = payload.delivery_object.location;
+        this.updateMap(currentLocation);
         this.cdr.detectChanges();
       }
     });

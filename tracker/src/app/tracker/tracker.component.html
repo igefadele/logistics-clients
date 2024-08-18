@@ -17,10 +17,13 @@
       <h2>Delivery Details</h2>
       <p><strong>Status:</strong> {{ deliveryDetails.status }}</p>
     </div>
-    <div id="map" style="height: 400px;"></div>
   </div>
+
   <div *ngIf="errorMessage !== ''">
     <h2>Error</h2>
     <p><strong>Status:</strong> {{ errorMessage }}</p>
   </div>
+
+  <div id="map" style="height: 400px;"></div>
+
 </div>
