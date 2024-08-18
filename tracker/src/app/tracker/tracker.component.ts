@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { PackageService } from '../services/package.service';
 import { DeliveryService } from '../services/delivery.service';
 import { WebSocketService } from '../services/websocket.service';
@@ -18,42 +18,64 @@ export class TrackerComponent implements OnInit {
   packageDetails: any;
   deliveryDetails: any;
   map: any;
+  errorMessage: string = '';
 
   constructor(
     private packageService: PackageService,
     private deliveryService: DeliveryService,
-    private webSocketService: WebSocketService
+    private webSocketService: WebSocketService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
-    // Initialize map when component is ready
     this.initializeMap();
   }
 
   // Fetch package and delivery details
   trackPackage() {
-    if (!this.packageId) return;
+    this.packageDetails = null;
+    this.deliveryDetails = null;
+    this.errorMessage = '';
+    this.map = null;
+
+    if (!this.packageId) {
+      this.errorMessage = 'No packageId provided';
+      return;
+    }
 
     this.packageService.getPackageById(this.packageId).subscribe((response) => {
-      this.packageDetails = response.data;
-      const packageData = response.data;
+      if (response.data) {
+        this.packageDetails = response.data;
+        const packageData = response.data;
 
-      if (packageData.active_delivery_id) {
-        this.deliveryService
-          .getDeliveryById(packageData.active_delivery_id)
-          .subscribe((deliveryResponse) => {
-            const deliveryData = deliveryResponse.data;
-            this.deliveryDetails = deliveryData;
-            this.updateMap(deliveryData.location);
-            this.listenForUpdates(deliveryData.delivery_id);
+        if (packageData.active_delivery_id) {
+          this.deliveryService.getDeliveryById(packageData.active_delivery_id).subscribe((deliveryResponse) => {
+            if (deliveryResponse.data) {
+              const deliveryData = deliveryResponse.data;
+              this.deliveryDetails = deliveryData;
+              //this.updateMap(deliveryData.location);
+              console.log('Starting to listen for updates for delivery ID:', deliveryData.delivery_id);
+
+              this.listenForUpdates(deliveryData.delivery_id);
+            } else {
+              this.errorMessage = 'No delivery data found for active delivery ID';
+             }
           });
-      }
+        } else {
+          this.errorMessage = 'No active delivery ID associated with this package';
+        }
+      } else {
+        this.errorMessage = 'No package data found for provided packageId';
+       }
     });
   }
 
+
   // Initialize the map
   initializeMap() {
-    this.map = L.map('map').setView([0, 0], 2); // Set initial view
+    // To set initial view
+    this.map = L.map('map').setView([0, 0], 2);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
@@ -68,22 +90,26 @@ export class TrackerComponent implements OnInit {
 
   // Listen for WebSocket updates
   listenForUpdates(deliveryId: string) {
+    console.log('listenForUpdates: Called!!!');
     this.webSocketService.onEvent('location_changed').subscribe((event) => {
       if (event.delivery_id === deliveryId) {
         this.updateMap(event.location);
+        this.cdr.detectChanges();
       }
     });
 
     this.webSocketService.onEvent('status_changed').subscribe((event) => {
       if (event.delivery_id === deliveryId) {
         this.deliveryDetails.status = event.status;
+        this.cdr.detectChanges();
       }
     });
 
-    this.webSocketService.onEvent('delivery_updated').subscribe((event) => {
-      if (event.delivery_id === deliveryId) {
-        this.deliveryDetails = event.delivery_object;
-        this.updateMap(event.delivery_object.location);
+    this.webSocketService.onEvent('delivery_updated').subscribe((payload) => {
+      if (payload.delivery_object.delivery_id === deliveryId) {
+        this.deliveryDetails = payload.delivery_object;
+        this.updateMap(payload.delivery_object.location);
+        this.cdr.detectChanges();
       }
     });
   }
