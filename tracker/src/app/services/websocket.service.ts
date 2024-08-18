@@ -1,6 +1,15 @@
+/**
+==============
+WEBSOCKET SERVICE
+==============
+*/
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
+import { API_WS_BASE_URL } from '../../core/constants';
+import { DeliveryIncomingEventPayload, DeliveryOutgoingEventPayload } from '../../core/models/ws_events_models';
+import { IncomingWsEventType, OutgoingWsEventType } from '../../core/enums';
 
 @Injectable({
   providedIn: 'root',
@@ -10,16 +19,18 @@ export class WebSocketService {
 
   constructor() {
     // Connect to the API WebSocket server
-    this.socket = io('http://localhost:3000');
+    this.socket = io(API_WS_BASE_URL);
   }
 
-  // Emit an event to the server
-  sendEvent(event: string, data: any) {
+  /** ==== SEND EVENT:
+   * Emit a websocket event to the server */
+  sendEvent(event: OutgoingWsEventType, data: DeliveryOutgoingEventPayload) {
     this.socket.emit(event, data);
   }
 
-  // Listen for events from the server
-  onEvent(event: string): Observable<any> {
+  /** ==== ON EVENT:
+   * Listen for events from the server */
+  onEvent(event: IncomingWsEventType): Observable<DeliveryIncomingEventPayload> {
     return new Observable((observer) => {
       this.socket.on(event, (data: any) => {
         observer.next(data);
@@ -27,7 +38,8 @@ export class WebSocketService {
     });
   }
 
-  // Disconnect the socket
+  /** ==== DISCONECT:
+   * Disconnect the socket */
   disconnect() {
     this.socket.disconnect();
   }

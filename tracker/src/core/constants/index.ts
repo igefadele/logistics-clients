@@ -1,7 +1,15 @@
-/** 
+/**
  ==============
  CONSTANT VALUES
 */
+
+export const PACKAGE = "package";
+export const DELIVERY = "delivery";
+
+export const API_BASE_URL = "http://localhost:3000/api";
+export const API_WS_BASE_URL = "http://localhost:3000";
+export const TRACKER_BASE_URL = "http://localhost:4200";
+
 
 export const POST = "POST";
 export const GET = "GET";

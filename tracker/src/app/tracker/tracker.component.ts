@@ -1,6 +1,7 @@
 /**
 ==============
 TRACKER COMPONENT
+==============
 */
 
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
@@ -10,6 +11,10 @@ import { WebSocketService } from '../services/websocket.service';
 import * as L from 'leaflet';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { IPackage } from '../../core/models/package.model';
+import { IDelivery } from '../../core/models/delivery.model';
+import { ILocation } from '../../core/models/location.model';
+import { IncomingWsEventType, WsEventType } from '../../core/enums';
 
 // Leaflet package marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -37,8 +42,8 @@ L.Marker.prototype.options.icon = iconDefault;
 })
 export class TrackerComponent implements OnInit {
   packageId: string = '';
-  packageDetails: any;
-  deliveryDetails: any;
+  packageDetails?: IPackage;
+  deliveryDetails?: IDelivery;
   map: any;
   markers: { [key: string]: L.Marker } = {};
   errorMessage: string = '';
@@ -52,14 +57,12 @@ export class TrackerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  ngAfterViewInit(): void {}
-
   /** ==== TRACK PACKAGE:
   Fetch package and delivery details */
 
   trackPackage() {
-    this.packageDetails = null;
-    this.deliveryDetails = null;
+    this.packageDetails = undefined;
+    this.deliveryDetails = undefined;
     this.errorMessage = '';
     this.map = null;
 
@@ -68,17 +71,21 @@ export class TrackerComponent implements OnInit {
       return;
     }
 
-    this.packageService.getPackageById(this.packageId).subscribe((response) => {
-      if (response.data) {
-        const packageData = response.data;
+    this.packageService.getPackageById(this.packageId)
+      .subscribe((packageResponse) => {
+      if (packageResponse.data) {
+        const packageData: IPackage = packageResponse.data as IPackage;
         this.packageDetails = packageData;
         this.initializeMap(packageData.from_location, packageData.to_location);
 
         if (packageData.active_delivery_id) {
-          this.deliveryService.getDeliveryById(packageData.active_delivery_id).subscribe((deliveryResponse) => {
+          this.deliveryService.getDeliveryById(packageData.active_delivery_id)
+            .subscribe((deliveryResponse) => {
             if (deliveryResponse.data) {
-              const deliveryData = deliveryResponse.data;
+              const deliveryData: IDelivery = deliveryResponse.data as IDelivery;
               this.deliveryDetails = deliveryData;
+              console.log('deliveryDetails: ', this.deliveryDetails);
+
               this.updateMap(deliveryData.location);
               this.listenForUpdates(deliveryData.delivery_id);
               this.cdr.detectChanges();
@@ -99,8 +106,7 @@ export class TrackerComponent implements OnInit {
   /** ==== INITIALIZE MAP:
   Initialize the map and add markers for from_location and to_location */
 
-  initializeMap(fromLocation: { lat: number; lng: number; }, toLocation: { lat: number; lng: number; }) {
-    // Set initial view
+  initializeMap(fromLocation: ILocation, toLocation: ILocation) {
     this.map = L.map('map').setView([0, 0], 2);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -115,7 +121,7 @@ export class TrackerComponent implements OnInit {
   /** ==== ADD MAP MARKER:
   Add a marker to the map and save it in the markers object */
 
-  addMarker(location: { lat: number; lng: number }, title: string, key: string) {
+  addMarker(location: ILocation, title: string, key: string) {
     const marker = L.marker([location.lat, location.lng]).addTo(this.map)
       .bindPopup(title)
       .openPopup();
@@ -126,7 +132,7 @@ export class TrackerComponent implements OnInit {
   /** ==== UPDATE MAP:
   Update the map with the current delivery location */
 
-  updateMap(location: { lat: number; lng: number }) {
+  updateMap(location: ILocation) {
     if (this.markers['current_location']) {
       this.map.removeLayer(this.markers['current_location']);
     }
@@ -144,7 +150,8 @@ export class TrackerComponent implements OnInit {
   Listen for WebSocket updates/events */
 
   listenForUpdates(deliveryId: string) {
-    this.webSocketService.onEvent('delivery_updated').subscribe((payload) => {
+    this.webSocketService.onEvent(IncomingWsEventType.delivery_updated)
+      .subscribe((payload) => {
       if (payload.delivery_object.delivery_id === deliveryId) {
         this.deliveryDetails = payload.delivery_object;
         const currentLocation = payload.delivery_object.location;
@@ -154,21 +161,3 @@ export class TrackerComponent implements OnInit {
     });
   }
 }
-
-
-
-/*
-Package
-_id: 66bf44d477da7bd5fc27c0c0
-package_id: f3f68498-eb05-4214-b87d-aadfd7168fcc
-active_delivery_id: 95ca4f3d-7792-4b76-804c-b6a23d59e31f
-
-*/
-
-
-/*
-Delivery
-_id: 66bf48f4c34faeb00856f3d4
-delivery_id: 95ca4f3d-7792-4b76-804c-b6a23d59e31f
-package_id: f3f68498-eb05-4214-b87d-aadfd7168fcc
-*/

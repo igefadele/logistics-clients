@@ -27,4 +27,5 @@ export interface DeliveryUpdatedPayload {
 
 /** Encapsulating Payload data model type for the three possible event payloads */
 export type DeliveryEventPayload = LocationChangedPayload | StatusChangedPayload | DeliveryUpdatedPayload;
-export type DeliveryIncomingEventPayload = LocationChangedPayload | StatusChangedPayload ;
+export type DeliveryOutgoingEventPayload = LocationChangedPayload | StatusChangedPayload;
+export type DeliveryIncomingEventPayload = DeliveryUpdatedPayload;
