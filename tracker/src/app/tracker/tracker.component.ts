@@ -63,9 +63,7 @@ export class TrackerComponent implements OnInit {
 
   trackPackage() {
     this.packageDetails = undefined;
-    this.deliveryDetails = undefined;
     this.errorMessage = '';
-    this.map = null;
 
     if (!this.packageId) {
       this.errorMessage = 'No packageId provided';
@@ -77,7 +75,11 @@ export class TrackerComponent implements OnInit {
       if (packageResponse.data) {
         const packageData: IPackage = packageResponse.data as IPackage;
         this.packageDetails = packageData;
-        this.initializeMap(packageData.from_location, packageData.to_location);
+        if (this.map) {
+          return;
+        } else {
+          this.initializeMap(packageData.from_location, packageData.to_location);
+        }
 
         if (packageData.active_delivery_id) {
           this.deliveryService.getDeliveryById(packageData.active_delivery_id)
