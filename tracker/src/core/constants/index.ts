@@ -10,7 +10,6 @@ export const API_BASE_URL = "http://localhost:3000/api";
 export const API_WS_BASE_URL = "http://localhost:3000";
 export const TRACKER_BASE_URL = "http://localhost:4200";
 
-
 export const POST = "POST";
 export const GET = "GET";
 export const PUT = "PUT";
@@ -38,4 +37,6 @@ export const DELIVERY_ID = "delivery_id";
 export const PACKAGE_ID = "package_id";
 
 export const UNKNOWN_INCOMING_WS_EVENT_TYPE = "Received an unknown incoming event";
-export const UNHANDLED_WS_EVENT_TYPE = "package_id";
+export const UNHANDLED_WS_EVENT_TYPE = "Unhandled Websocket Event Type";
+
+export const CURRENT_LOCATION = "current_location";

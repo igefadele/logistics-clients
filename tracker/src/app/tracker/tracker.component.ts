@@ -15,6 +15,7 @@ import { IPackage } from '../../core/models/package.model';
 import { IDelivery } from '../../core/models/delivery.model';
 import { ILocation } from '../../core/models/location.model';
 import { IncomingWsEventType, WsEventType } from '../../core/enums';
+import { CURRENT_LOCATION } from '../../core/constants';
 
 // Leaflet package marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -84,8 +85,6 @@ export class TrackerComponent implements OnInit {
             if (deliveryResponse.data) {
               const deliveryData: IDelivery = deliveryResponse.data as IDelivery;
               this.deliveryDetails = deliveryData;
-              console.log('deliveryDetails: ', this.deliveryDetails);
-
               this.updateMap(deliveryData.location);
               this.listenForUpdates(deliveryData.delivery_id);
               this.cdr.detectChanges();
@@ -133,15 +132,15 @@ export class TrackerComponent implements OnInit {
   Update the map with the current delivery location */
 
   updateMap(location: ILocation) {
-    if (this.markers['current_location']) {
-      this.map.removeLayer(this.markers['current_location']);
+    if (this.markers[CURRENT_LOCATION]) {
+      this.map.removeLayer(this.markers[CURRENT_LOCATION]);
     }
 
     const marker = L.marker([location.lat, location.lng]).addTo(this.map)
       .bindPopup('Current Location')
       .openPopup();
 
-    this.markers['current_location'] = marker;
+    this.markers[CURRENT_LOCATION] = marker;
     this.map.setView([location.lat, location.lng], 13);
   }
 
