@@ -1,0 +1,37 @@
+.tracker-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+ /*  text-align: center; */
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 30px;
+}
+
+.map-frame {
+  border: 2px solid black;
+  height: 100%;
+}
+
+#map {
+  margin-top: 20px;
+  height: 100%;
+}
