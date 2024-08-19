@@ -1,5 +1,5 @@
 <div class="tracker-container">
-  <h1>Track Your Package</h1>
+  <h1 class="text-3xl font-bold underline">Track Your Package</h1>
   <input
     type="text"
     [(ngModel)]="packageId"
@@ -9,7 +9,7 @@
   <button (click)="trackPackage()">Track</button>
 
   <div *ngIf="packageDetails">
-    <h2>Package Details</h2>
+    <h2 >Package Details</h2>
     <p><strong>ID:</strong> {{ packageDetails.package_id }}</p>
     <p><strong>Description:</strong> {{ packageDetails.description }}</p>
 
