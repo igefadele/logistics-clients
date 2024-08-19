@@ -1,22 +1,28 @@
 <div class="tracker-container">
-  <h1 class="text-3xl font-bold">Track Your Delivery</h1>
-  <input
-    type="text"
-    [(ngModel)]="deliveryId"
-    placeholder="Enter Package ID"
-    (keyup.enter)="trackDelivery()"
-  />
-  <button (click)="trackDelivery()">Track</button>
+  <div>
+    <h1 class="text-3xl font-bold">Track Your Delivery</h1>
+    <input
+      type="text"
+      [(ngModel)]="deliveryId"
+      placeholder="Enter Package ID"
+      (keyup.enter)="trackDelivery()"
+    />
+    <button class="btn btn-success mx-5" (click)="trackDelivery()">Track</button>
+  </div>
+
+  <div class="my-5">
+    <button class="btn btn-info mx-2" (click)="changeStatus(status.pickedUp)">Picked Up</button>
+    <button class="btn btn-warning mx-2" (click)="changeStatus(status.inTransit)">In-Transit</button>
+    <button class="btn btn-success mx-2" (click)="changeStatus(status.delivered)">Delivered</button>
+    <button class="btn btn-error mx-2" (click)="changeStatus(status.failed)">Failed</button>
+  </div>
 
   <div *ngIf="errorMessage !== ''">
     <h2>Error</h2>
     <p><strong>Error:</strong> {{ errorMessage }}</p>
   </div>
 
-<!--   <div id="map" style="height: 400px;"></div> -->
-
-
-  <div *ngIf="deliveryDetails" class="hero bg-base-200 min-h-screen">
+  <div *ngIf="deliveryDetails && errorMessage === ''" class="hero bg-base-200 min-h-screen">
     <div class="hero-content flex-col lg:flex-row lg:items-start">
 
       <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
@@ -63,7 +69,9 @@
 
     </div>
   </div>
+  <div *ngIf="deliveryDetails">
+    <div id="map" style="height: 600px;"></div>
+  </div>
 
-  <div id="map" style="height: 600px;"></div>
 
 </div>

@@ -6,18 +6,15 @@
     placeholder="Enter Package ID"
     (keyup.enter)="trackPackage()"
   />
-  <button (click)="trackPackage()">Track</button>
+  <button class="btn btn-success mx-5" (click)="trackPackage()">Track</button>
 
   <div *ngIf="errorMessage !== ''">
     <h2>Error</h2>
     <p><strong>Error:</strong> {{ errorMessage }}</p>
   </div>
 
-<!--   <div id="map" style="height: 400px;"></div> -->
-
-
-  <div class="hero bg-base-200 min-h-screen">
-    <div *ngIf="packageDetails" class="hero-content flex-col lg:flex-row lg:items-start">
+  <div *ngIf="packageDetails" class="hero bg-base-200 min-h-screen">
+    <div  class="hero-content flex-col lg:flex-row lg:items-start">
 
       <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <div class="card-body">

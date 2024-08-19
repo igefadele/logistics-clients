@@ -14,10 +14,11 @@ import { CommonModule } from '@angular/common';
 import { IPackage } from '../../core/models/package.model';
 import { IDelivery } from '../../core/models/delivery.model';
 import { ILocation } from '../../core/models/location.model';
-import { IncomingWsEventType, WsEventType } from '../../core/enums';
+import { DeliveryStatus, IncomingWsEventType, OutgoingWsEventType, WsEventType } from '../../core/enums';
 import { CURRENT_LOCATION, CURRENT_LOCATION_TITLE, FROM_LOCATION, FROM_LOCATION_TITLE, MAP, TO_LOCATION, TO_LOCATION_TITLE } from '../../core/constants';
 import { formatLocation } from '../../core/utils';
 import { LocationService } from '../services/location.service';
+import { StatusChangedPayload } from '../../core/models/ws_events_models';
 
 // Leaflet package marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -51,6 +52,7 @@ export class TrackerComponent implements OnInit {
   markers: { [key: string]: L.Marker } = {};
   errorMessage: string = '';
   formatLocation = formatLocation;
+  status = DeliveryStatus;
 
   constructor(
     private packageService: PackageService,
@@ -60,15 +62,13 @@ export class TrackerComponent implements OnInit {
     private cdr: ChangeDetectorRef,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-   }
 
   /** ==== TRACK PACKAGE:
   Fetch package and delivery details */
 
   trackDelivery() {
-    this.deliveryDetails = undefined;
     this.errorMessage = '';
 
     if (!this.deliveryId) {
@@ -110,6 +110,7 @@ export class TrackerComponent implements OnInit {
           this.errorMessage = 'No delivery data found for provided deliveryId';
         }
       });
+    console.log('errorMessage: ', this.errorMessage);
   }
 
 
@@ -170,17 +171,20 @@ export class TrackerComponent implements OnInit {
     });
   }
 
-    /** ==== SEND EVENT
-  Send WebSocket updates/events to server */
-  sendUpdate(deliveryId: string) {
-   const locationEventPayload = {
-      event: "location_changed",
-      delivery_id: deliveryId,
-      location: {
-        "lat": 37.2242,
-        "lng": -115.3215,
-        "_id": "66bf48f4c34faeb00856f3d5"
-      }
+    /** ==== CHANGE DELIVERY STATUS
+  Send delivery status change WebSocket updates/events to server */
+  changeStatus(status: DeliveryStatus) {
+    this.deliveryDetails = undefined;
+    this.errorMessage = '';
+    if (!this.deliveryId) {
+      this.errorMessage = 'No deliveryId provided';
+      return;
     }
+    const statusEventPayload: StatusChangedPayload = {
+      event: WsEventType.status_changed,
+      delivery_id: this.deliveryId,
+      status: status,
+    }
+    this.webSocketService.sendEvent(OutgoingWsEventType.status_changed, statusEventPayload);
   }
 }
