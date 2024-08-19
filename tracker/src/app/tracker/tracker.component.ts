@@ -15,7 +15,7 @@ import { IPackage } from '../../core/models/package.model';
 import { IDelivery } from '../../core/models/delivery.model';
 import { ILocation } from '../../core/models/location.model';
 import { IncomingWsEventType, WsEventType } from '../../core/enums';
-import { CURRENT_LOCATION } from '../../core/constants';
+import { CURRENT_LOCATION, CURRENT_LOCATION_TITLE, FROM_LOCATION, FROM_LOCATION_TITLE, MAP, TO_LOCATION, TO_LOCATION_TITLE } from '../../core/constants';
 import { formatLocation } from '../../core/utils';
 
 // Leaflet package marker icons
@@ -110,27 +110,26 @@ export class TrackerComponent implements OnInit {
   Initialize the map and add markers for from_location and to_location */
 
   initializeMap(fromLocation: ILocation, toLocation: ILocation) {
-    this.map = L.map('map').setView([0, 0], 2);
+    this.map = L.map(MAP).setView([0, 0], 2);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(this.map);
 
-    this.addMarker(fromLocation, 'From Location', 'from_location');
-    this.addMarker(toLocation, 'To Location', 'to_location');
+    this.addMarker({location: fromLocation, title: FROM_LOCATION_TITLE, key: FROM_LOCATION});
+    this.addMarker({location: toLocation, title: TO_LOCATION_TITLE, key: TO_LOCATION});
   }
 
 
   /** ==== ADD MAP MARKER:
   Add a marker to the map and save it in the markers object */
 
-  addMarker(location: ILocation, title: string, key: string) {
-    const marker = L.marker([location.lat, location.lng]).addTo(this.map)
-      .bindPopup(title)
+  addMarker(data: {location: ILocation, title: string, key: string}) {
+    const marker = L.marker([data.location.lat, data.location.lng]).addTo(this.map)
+      .bindPopup(data.title)
       .openPopup();
-    this.markers[key] = marker;
+    this.markers[data.key] = marker;
   }
-
 
   /** ==== UPDATE MAP:
   Update the map with the current delivery location */
@@ -141,7 +140,7 @@ export class TrackerComponent implements OnInit {
     }
 
     const marker = L.marker([location.lat, location.lng]).addTo(this.map)
-      .bindPopup('Current Location')
+      .bindPopup(CURRENT_LOCATION_TITLE)
       .openPopup();
 
     this.markers[CURRENT_LOCATION] = marker;

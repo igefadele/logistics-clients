@@ -39,4 +39,10 @@ export const PACKAGE_ID = "package_id";
 export const UNKNOWN_INCOMING_WS_EVENT_TYPE = "Received an unknown incoming event";
 export const UNHANDLED_WS_EVENT_TYPE = "Unhandled Websocket Event Type";
 
+export const FROM_LOCATION = "from_location";
+export const TO_LOCATION = "to_location";
 export const CURRENT_LOCATION = "current_location";
+export const FROM_LOCATION_TITLE = "From Location";
+export const TO_LOCATION_TITLE = "To Location";
+export const CURRENT_LOCATION_TITLE = "Current Location";
+export const MAP = 'map';

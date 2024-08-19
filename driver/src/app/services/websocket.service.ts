@@ -15,7 +15,7 @@ import { IncomingWsEventType, OutgoingWsEventType } from '../../core/enums';
   providedIn: 'root',
 })
 export class WebSocketService {
-  private socket: Socket;
+  socket: Socket;
 
   constructor() {
     // Connect to the API WebSocket server

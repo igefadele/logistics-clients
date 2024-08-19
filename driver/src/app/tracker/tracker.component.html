@@ -1,12 +1,12 @@
 <div class="tracker-container">
-  <h1 class="text-3xl font-bold">Track Your Package</h1>
+  <h1 class="text-3xl font-bold">Track Your Delivery</h1>
   <input
     type="text"
-    [(ngModel)]="packageId"
+    [(ngModel)]="deliveryId"
     placeholder="Enter Package ID"
-    (keyup.enter)="trackPackage()"
+    (keyup.enter)="trackDelivery()"
   />
-  <button (click)="trackPackage()">Track</button>
+  <button (click)="trackDelivery()">Track</button>
 
   <div *ngIf="errorMessage !== ''">
     <h2>Error</h2>
@@ -16,10 +16,24 @@
 <!--   <div id="map" style="height: 400px;"></div> -->
 
 
-  <div class="hero bg-base-200 min-h-screen">
-    <div *ngIf="packageDetails" class="hero-content flex-col lg:flex-row lg:items-start">
+  <div *ngIf="deliveryDetails" class="hero bg-base-200 min-h-screen">
+    <div class="hero-content flex-col lg:flex-row lg:items-start">
 
       <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <div class="card-body">
+          <h2>Delivery Details</h2>
+          <p><strong>ID:</strong> {{ deliveryDetails.delivery_id }}</p>
+          <p><strong>Status:</strong> {{ deliveryDetails.status }}</p>
+          <p><strong>Current Location:</strong> {{ formatLocation(deliveryDetails.location) }}</p>
+
+          <h3>Timing</h3>
+          <p><strong>Pickup Time:</strong> {{ deliveryDetails.pickup_time }}</p>
+          <p><strong>Start Time:</strong> {{ deliveryDetails.start_time }}</p>
+          <p><strong>End Time:</strong> {{ deliveryDetails.end_time }}</p>
+        </div>
+      </div>
+
+      <div *ngIf="packageDetails" class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <div class="card-body">
           <h2 >Package Details</h2>
           <p><strong>ID:</strong> {{ packageDetails.package_id }}</p>
@@ -47,19 +61,6 @@
         </div>
       </div>
 
-      <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-        <div *ngIf="deliveryDetails" class="card-body">
-          <h2>Delivery Details</h2>
-          <p><strong>ID:</strong> {{ deliveryDetails.delivery_id }}</p>
-          <p><strong>Status:</strong> {{ deliveryDetails.status }}</p>
-          <p><strong>Current Location:</strong> {{ formatLocation(deliveryDetails.location) }}</p>
-
-          <h3>Timing</h3>
-          <p><strong>Pickup Time:</strong> {{ deliveryDetails.pickup_time }}</p>
-          <p><strong>Start Time:</strong> {{ deliveryDetails.start_time }}</p>
-          <p><strong>End Time:</strong> {{ deliveryDetails.end_time }}</p>
-        </div>
-      </div>
     </div>
   </div>
 

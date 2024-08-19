@@ -15,8 +15,9 @@ import { IPackage } from '../../core/models/package.model';
 import { IDelivery } from '../../core/models/delivery.model';
 import { ILocation } from '../../core/models/location.model';
 import { IncomingWsEventType, WsEventType } from '../../core/enums';
-import { CURRENT_LOCATION } from '../../core/constants';
+import { CURRENT_LOCATION, CURRENT_LOCATION_TITLE, FROM_LOCATION, FROM_LOCATION_TITLE, MAP, TO_LOCATION, TO_LOCATION_TITLE } from '../../core/constants';
 import { formatLocation } from '../../core/utils';
+import { LocationService } from '../services/location.service';
 
 // Leaflet package marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -43,7 +44,7 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrls: ['./tracker.component.css'],
 })
 export class TrackerComponent implements OnInit {
-  packageId: string = '';
+  deliveryId: string = '';
   packageDetails?: IPackage;
   deliveryDetails?: IDelivery;
   map: any;
@@ -55,97 +56,102 @@ export class TrackerComponent implements OnInit {
     private packageService: PackageService,
     private deliveryService: DeliveryService,
     private webSocketService: WebSocketService,
+    private locationService: LocationService,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+   }
 
   /** ==== TRACK PACKAGE:
   Fetch package and delivery details */
 
-  trackPackage() {
-    this.packageDetails = undefined;
+  trackDelivery() {
+    this.deliveryDetails = undefined;
     this.errorMessage = '';
 
-    if (!this.packageId) {
-      this.errorMessage = 'No packageId provided';
+    if (!this.deliveryId) {
+      this.errorMessage = 'No deliveryId provided';
       return;
     }
+    this.locationService.startLocationUpdates(this.deliveryId);
 
-    this.packageService.getPackageById(this.packageId)
-      .subscribe((packageResponse) => {
-      if (packageResponse.data) {
-        const packageData: IPackage = packageResponse.data as IPackage;
-        this.packageDetails = packageData;
-        if (this.map) {
-          return;
-        } else {
-          this.initializeMap(packageData.from_location, packageData.to_location);
-        }
+    this.deliveryService.getDeliveryById(this.deliveryId)
+      .subscribe((deliveryResponse) => {
+        if (deliveryResponse.data) {
+          const deliveryData: IDelivery = deliveryResponse.data as IDelivery;
+          this.deliveryDetails = deliveryData;
+          this.listenForUpdates(deliveryData.delivery_id);
+          this.cdr.detectChanges();
+          if (this.map) {
+            return;
+          } else {
+            this.initializeMap(deliveryData.location);
+          }
 
-        if (packageData.active_delivery_id) {
-          this.deliveryService.getDeliveryById(packageData.active_delivery_id)
-            .subscribe((deliveryResponse) => {
-            if (deliveryResponse.data) {
-              const deliveryData: IDelivery = deliveryResponse.data as IDelivery;
-              this.deliveryDetails = deliveryData;
-              this.updateMap(deliveryData.location);
-              this.listenForUpdates(deliveryData.delivery_id);
-              this.cdr.detectChanges();
-            } else {
-              this.errorMessage = 'No delivery data found for active delivery ID';
-             }
-          });
+          if (deliveryData.package_id) {
+            this.packageService.getPackageById(deliveryData.package_id)
+              .subscribe((packageResponse) => {
+                if (packageResponse.data) {
+                  const packageData: IPackage = packageResponse.data as IPackage;
+                  this.packageDetails = packageData;
+                  this.updateMap({location: packageData.from_location, title: FROM_LOCATION_TITLE, key: FROM_LOCATION});
+                  this.updateMap({location: packageData.to_location, title: TO_LOCATION_TITLE, key: TO_LOCATION});
+                  this.cdr.detectChanges();
+                } else {
+                  this.errorMessage = 'No package data found for the package ID';
+                }
+              });
+          } else {
+            this.errorMessage = 'No package ID associated with this delivery';
+          }
         } else {
-          this.errorMessage = 'No active delivery ID associated with this package';
+          this.errorMessage = 'No delivery data found for provided deliveryId';
         }
-      } else {
-        this.errorMessage = 'No package data found for provided packageId';
-       }
-    });
+      });
   }
 
 
   /** ==== INITIALIZE MAP:
   Initialize the map and add markers for from_location and to_location */
 
-  initializeMap(fromLocation: ILocation, toLocation: ILocation) {
-    this.map = L.map('map').setView([0, 0], 2);
+  initializeMap(currentLocation: ILocation) {
+    this.map = L.map(MAP).setView([0, 0], 2);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(this.map);
 
-    this.addMarker(fromLocation, 'From Location', 'from_location');
-    this.addMarker(toLocation, 'To Location', 'to_location');
+    this.addMarker({location: currentLocation, title: CURRENT_LOCATION_TITLE, key: CURRENT_LOCATION});
   }
 
 
   /** ==== ADD MAP MARKER:
   Add a marker to the map and save it in the markers object */
 
-  addMarker(location: ILocation, title: string, key: string) {
-    const marker = L.marker([location.lat, location.lng]).addTo(this.map)
-      .bindPopup(title)
+  addMarker(data: {location: ILocation, title: string, key: string}) {
+    const marker = L.marker([data.location.lat, data.location.lng]).addTo(this.map)
+      .bindPopup(data.title)
       .openPopup();
-    this.markers[key] = marker;
+    this.markers[data.key] = marker;
   }
 
 
   /** ==== UPDATE MAP:
   Update the map with the current delivery location */
 
-  updateMap(location: ILocation) {
-    if (this.markers[CURRENT_LOCATION]) {
-      this.map.removeLayer(this.markers[CURRENT_LOCATION]);
+  updateMap(data: {location: ILocation, title: string, key: string}) {
+    if (this.markers[data.key]) {
+      this.map.removeLayer(this.markers[data.key]);
     }
 
-    const marker = L.marker([location.lat, location.lng]).addTo(this.map)
-      .bindPopup('Current Location')
+    const marker = L.marker([data.location.lat, data.location.lng]).addTo(this.map)
+      .bindPopup(data.title)
       .openPopup();
 
-    this.markers[CURRENT_LOCATION] = marker;
-    this.map.setView([location.lat, location.lng], 13);
+    this.markers[data.key] = marker;
+    this.map.setView([data.location.lat, data.location.lng], 13);
   }
 
 
@@ -158,9 +164,23 @@ export class TrackerComponent implements OnInit {
       if (payload.delivery_object.delivery_id === deliveryId) {
         this.deliveryDetails = payload.delivery_object;
         const currentLocation = payload.delivery_object.location;
-        this.updateMap(currentLocation);
+        this.updateMap({location: currentLocation, title: CURRENT_LOCATION_TITLE, key: CURRENT_LOCATION});
         this.cdr.detectChanges();
       }
     });
+  }
+
+    /** ==== SEND EVENT
+  Send WebSocket updates/events to server */
+  sendUpdate(deliveryId: string) {
+   const locationEventPayload = {
+      event: "location_changed",
+      delivery_id: deliveryId,
+      location: {
+        "lat": 37.2242,
+        "lng": -115.3215,
+        "_id": "66bf48f4c34faeb00856f3d5"
+      }
+    }
   }
 }
