@@ -16,6 +16,7 @@ import { IDelivery } from '../../core/models/delivery.model';
 import { ILocation } from '../../core/models/location.model';
 import { IncomingWsEventType, WsEventType } from '../../core/enums';
 import { CURRENT_LOCATION } from '../../core/constants';
+import { formatLocation } from '../../core/utils';
 
 // Leaflet package marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -48,6 +49,7 @@ export class TrackerComponent implements OnInit {
   map: any;
   markers: { [key: string]: L.Marker } = {};
   errorMessage: string = '';
+  formatLocation = formatLocation;
 
   constructor(
     private packageService: PackageService,

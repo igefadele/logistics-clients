@@ -1,5 +1,5 @@
 <div class="tracker-container">
-  <h1 class="text-3xl font-bold underline">Track Your Package</h1>
+  <h1 class="text-3xl font-bold">Track Your Package</h1>
   <input
     type="text"
     [(ngModel)]="packageId"
@@ -8,23 +8,61 @@
   />
   <button (click)="trackPackage()">Track</button>
 
-  <div *ngIf="packageDetails">
-    <h2 >Package Details</h2>
-    <p><strong>ID:</strong> {{ packageDetails.package_id }}</p>
-    <p><strong>Description:</strong> {{ packageDetails.description }}</p>
-
-    <div *ngIf="deliveryDetails">
-      <h2>Delivery Details</h2>
-      <p><strong>Status:</strong> {{ deliveryDetails.status }}</p>
-    </div>
-
-  </div>
-
   <div *ngIf="errorMessage !== ''">
     <h2>Error</h2>
     <p><strong>Error:</strong> {{ errorMessage }}</p>
   </div>
 
-  <div id="map" style="height: 400px;"></div>
+<!--   <div id="map" style="height: 400px;"></div> -->
+
+
+  <div class="hero bg-base-200 min-h-screen">
+    <div *ngIf="packageDetails" class="hero-content flex-col lg:flex-row lg:items-start">
+
+      <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <div class="card-body">
+          <h2 >Package Details</h2>
+          <p><strong>ID:</strong> {{ packageDetails.package_id }}</p>
+          <p><strong>Description:</strong> {{ packageDetails.description }}</p>
+
+          <h3 >Dimensions</h3>
+          <p>
+            <span><strong>Weight:</strong> {{ packageDetails.weight }}</span>
+            <span> <strong>Width:</strong> {{ packageDetails.width }}</span>
+          </p>
+          <p>
+            <span> <strong>Height:</strong> {{ packageDetails.height }}</span>
+            <span> <strong>Depth:</strong> {{ packageDetails.depth }}</span>
+          </p>
+
+          <h3 >Sender</h3>
+          <p><strong>Name:</strong> {{ packageDetails.from_name }}</p>
+          <p> <strong>Address:</strong> {{ packageDetails.from_address }}</p>
+          <p><strong>Location:</strong> {{ formatLocation(packageDetails.from_location) }}</p>
+
+          <h3 >Receiver</h3>
+          <p><strong>Name:</strong> {{ packageDetails.to_name }}</p>
+          <p> <strong>Address:</strong> {{ packageDetails.to_address }}</p>
+          <p> <strong>Location:</strong> {{ formatLocation(packageDetails.to_location) }}</p>
+        </div>
+      </div>
+
+      <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <div *ngIf="deliveryDetails" class="card-body">
+          <h2>Delivery Details</h2>
+          <p><strong>ID:</strong> {{ deliveryDetails.delivery_id }}</p>
+          <p><strong>Status:</strong> {{ deliveryDetails.status }}</p>
+          <p><strong>Current Location:</strong> {{ formatLocation(deliveryDetails.location) }}</p>
+
+          <h3>Timing</h3>
+          <p><strong>Pickup Time:</strong> {{ deliveryDetails.pickup_time }}</p>
+          <p><strong>Start Time:</strong> {{ deliveryDetails.start_time }}</p>
+          <p><strong>End Time:</strong> {{ deliveryDetails.end_time }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="map" style="height: 600px;"></div>
 
 </div>
