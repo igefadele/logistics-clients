@@ -1,4 +1,8 @@
-export const plugins = {
-  tailwindcss: {},
-  autoprefixer: {},
+const { default: daisyui } = require("daisyui");
+
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
 };
