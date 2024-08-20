@@ -1,1 +1,38 @@
-<p>create-package works!</p>
+<div class="p-20 mx-auto my-0 text-center">
+  <div>
+    <h1 class="text-3xl font-bold">Create Package</h1>
+  </div>
+
+  <form (ngSubmit)="createPackage()">
+    <input type="textarea" [(ngModel)]="newPackageData.description" name="description" placeholder="Description" required>
+    <input type="number" [(ngModel)]="newPackageData.weight" name="weight" placeholder="Weight" required>
+    <input type="number" [(ngModel)]="newPackageData.width" name="width" placeholder="Width" required>
+    <input type="number" [(ngModel)]="newPackageData.height" name="height" placeholder="Height" required>
+    <input type="number" [(ngModel)]="newPackageData.depth" name="depth"  placeholder="Depth" required>
+
+    <input type="text" [(ngModel)]="newPackageData.from_name" name="from_name" placeholder="From Name" required>
+    <input type="text" [(ngModel)]="newPackageData.from_address" name="from_address" placeholder="From Address" required>
+    <input type="text" [(ngModel)]="newPackageData.to_name" name="to_name" placeholder="To Name" required>
+    <input type="text" [(ngModel)]="newPackageData.to_address" name="to_address" placeholder="To Address" required>
+
+  <!--   <input type="number" [(ngModel)]="fromLocation.lat" placeholder="From Location Latitude" required>
+    <input type="number" [(ngModel)]="fromLocation.lng" placeholder="From Location Longitude" required>
+
+    <input type="number" [(ngModel)]="toLocation.lat" placeholder="To Location Latitude" required>
+    <input type="number" [(ngModel)]="toLocation.lng" placeholder="To Location Longitude" required> -->
+
+    <button type="button" (click)="openDeliveryModal()">Select Delivery</button>
+    <button type="submit">Create</button>
+  </form>
+
+  <ng-template #deliveryModal let-modal>
+    <div *ngIf="deliveryList">
+      <h3>Select Delivery</h3>
+      <ul>
+        <li *ngFor="let delivery of deliveryList" (click)="selectDelivery(delivery.delivery_id)">
+          {{ delivery.delivery_id }} - {{ delivery.status }}
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+</div>

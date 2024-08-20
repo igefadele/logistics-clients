@@ -1,1 +1,27 @@
-<p>create-delivery works!</p>
+<div class="p-20 mx-auto my-0 text-center">
+  <div>
+    <h1 class="text-3xl font-bold">Create Delivery</h1>
+  </div>
+
+  <!-- <h2>{{ isEditing ? 'Edit' : 'Create' }} Delivery</h2> -->
+  <form (ngSubmit)="createDelivery()">
+
+    <input type="date" [(ngModel)]="newDeliveryData.start_time" name="date" placeholder="Start Time" required>
+    <select [(ngModel)]="newDeliveryData.status">
+      <option *ngFor="let status of deliveryStatusList" [value]="status">{{ status }}</option>
+    </select>
+    <button type="button" (click)="openPackageModal()">Select Package</button>
+    <button type="submit">Create</button>
+  </form>
+
+  <ng-template #packageModal let-modal>
+    <div>
+      <h3>Select Package</h3>
+      <ul>
+        <li *ngFor="let package of packageList" (click)="selectPackage(package.package_id)">
+          {{ package.package_id }} - {{ package.description }}
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+</div>

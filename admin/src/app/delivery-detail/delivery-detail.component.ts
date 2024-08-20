@@ -84,6 +84,4 @@ export class DeliveryDetailComponent implements OnInit {
       }
     });
   }
-
-
 }

@@ -14,12 +14,11 @@ import { CommonModule } from '@angular/common';
 import { IPackage } from '../../data/models/package.model';
 import { IDelivery } from '../../data/models/delivery.model';
 import { ILocation } from '../../data/models/location.model';
-import { DeliveryStatus, EntityKey, IncomingWsEventType, OutgoingWsEventType, WsEventType } from '../../data/enums';
+import { DeliveryStatus, EntityKey, IncomingWsEventType, OutgoingWsEventType, SavedDataKey, WsEventType } from '../../data/enums';
 import { CURRENT_LOCATION, CURRENT_LOCATION_TITLE, FROM_LOCATION, FROM_LOCATION_TITLE, MAP, OK, ROUTE_CREATE_DELIVERY, ROUTE_CREATE_PACKAGE, ROUTE_DELIVERY_DETAIL, ROUTE_PACKAGE_DETAIL, TO_LOCATION, TO_LOCATION_TITLE } from '../../core/constants';
 import { formatLocation } from '../../core/utils';
 import { LocationService } from '../../data/services/location.service';
 import { StatusChangedPayload } from '../../data/models/ws_events_models';
-import { v4 as uuidv4 } from 'uuid';
 import { Router, NavigationExtras } from '@angular/router';
 import { DatastoreService } from '../../data/services/datastore.service';
 
@@ -201,51 +200,6 @@ export class TrackerComponent implements OnInit {
     this.webSocketService.sendEvent(OutgoingWsEventType.status_changed, statusEventPayload);
   }
 
-  /** ==== CREATE PACKAGE:
-  * Create new package document on the server */
-
-  createPackage() {
-    this.errorMessage = '';
-    if (!this.newPackageData) {
-      this.errorMessage = 'No new package data provided';
-      return;
-    }
-    const newPackageId = uuidv4();
-    this.newPackageData.package_id = newPackageId;
-
-    this.packageService.create(this.newPackageData)
-      .subscribe((response) => {
-        if (response.code === OK) {
-          this.successMessage = response.message as string;
-        } else {
-          this.errorMessage = response.message as string;
-      }
-      });
-  }
-
-
-  /** ==== CREATE DELIVERY:
-  * Create new delivery document on the server */
-
-  createDelivery() {
-    this.errorMessage = '';
-    if (!this.newDeliveryData) {
-      this.errorMessage = 'No new delivery data provided';
-      return;
-    }
-    const newDeliveryId = uuidv4();
-    this.newDeliveryData.delivery_id = newDeliveryId;
-
-    this.deliveryService.create(this.newDeliveryData)
-      .subscribe((response) => {
-        if (response.code === OK) {
-          this.successMessage = response.message as string;
-        } else {
-          this.errorMessage = response.message as string;
-      }
-      });
-  }
-
 
   /** ==== GET ALL PACKAGES:
   * Fetch all packages from the server */
@@ -255,6 +209,7 @@ export class TrackerComponent implements OnInit {
       if (response.data) {
         const list = response.data;
         this.packageList = response.data as IPackage[];
+        this.datastoreService.setObsData(SavedDataKey.packageList, this.packageList);
       }
     });
   }
@@ -268,6 +223,7 @@ export class TrackerComponent implements OnInit {
       if (response.data) {
         const list = response.data;
         this.deliveryList = response.data as IDelivery[];
+        this.datastoreService.setObsData(SavedDataKey.deliveryList, this.deliveryList);
       }
     });
   }
@@ -275,14 +231,14 @@ export class TrackerComponent implements OnInit {
   /** ==== VIEW PACKAGE DETAIL ROUTE: */
   viewPackageDetail(packageData: IPackage) {
     this.packageDetails = packageData;
-    this.datastoreService.setObsData(EntityKey.package, this.packageDetails as IPackage);
+    this.datastoreService.setObsData(SavedDataKey.package, this.packageDetails);
     this.router.navigate([ROUTE_PACKAGE_DETAIL, packageData.package_id]);
   }
 
   /** ==== VIEW DELIVERY DETAIL ROUTE: */
   viewDeliveryDetail(deliveryData: IDelivery) {
     this.deliveryDetails = deliveryData;
-    this.datastoreService.setObsData(EntityKey.delivery, this.deliveryDetails as IDelivery);
+    this.datastoreService.setObsData(SavedDataKey.delivery, this.deliveryDetails);
     this.router.navigate([ROUTE_DELIVERY_DETAIL, deliveryData.delivery_id]);
   }
 

@@ -30,3 +30,12 @@ export enum OutgoingWsEventType {
   location_changed = "location_changed",
   status_changed = "status_changed",
 }
+
+export enum SavedDataKey {
+  package = 'package',
+  delivery = 'delivery',
+  packageList = 'packageList',
+  deliveryList = 'deliveryList',
+  packageId = 'packageId',
+  deliveryId = 'deliveryId',
+}
