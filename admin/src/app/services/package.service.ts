@@ -43,9 +43,17 @@ export class PackageService {
 
   /** ==== UPDATE PACKAGE:
    * Update a package document on the server */
-  Update(data: IPackage): Observable<ResponseHandler> {
+  update(data: IPackage): Observable<ResponseHandler> {
     const url = `${this.baseUrl}/${data.package_id}`;
     const response = this.http.put<any>(url, data);
+    return response;
+  }
+
+  /** ==== DELETE PACKAGE:
+   * Delete a package document on the server */
+  delete(id: string): Observable<ResponseHandler> {
+    const url = `${this.baseUrl}/${id}`;
+    const response = this.http.delete<any>(url);
     return response;
   }
 }

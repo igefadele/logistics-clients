@@ -41,10 +41,18 @@ export class DeliveryService {
   }
 
   /** ==== UPDATE DELIVERY:
-   * Update a package document on the server */
-  Update(data: IDelivery): Observable<ResponseHandler> {
+   * Update a delivery document on the server */
+  update(data: IDelivery): Observable<ResponseHandler> {
     const url = `${this.baseUrl}/${data.delivery_id}`;
     const response = this.http.put<any>(url, data);
+    return response;
+  }
+
+   /** ==== DELETE DELIVERY:
+   * Delete a delivery document on the server */
+   delete(id: string): Observable<ResponseHandler> {
+    const url = `${this.baseUrl}/${id}`;
+    const response = this.http.delete<any>(url);
     return response;
   }
 }

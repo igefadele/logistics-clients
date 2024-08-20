@@ -15,10 +15,11 @@ import { IPackage } from '../../data/models/package.model';
 import { IDelivery } from '../../data/models/delivery.model';
 import { ILocation } from '../../data/models/location.model';
 import { DeliveryStatus, IncomingWsEventType, OutgoingWsEventType, WsEventType } from '../../data/enums';
-import { CURRENT_LOCATION, CURRENT_LOCATION_TITLE, FROM_LOCATION, FROM_LOCATION_TITLE, MAP, TO_LOCATION, TO_LOCATION_TITLE } from '../../core/constants';
+import { CURRENT_LOCATION, CURRENT_LOCATION_TITLE, FROM_LOCATION, FROM_LOCATION_TITLE, MAP, OK, TO_LOCATION, TO_LOCATION_TITLE } from '../../core/constants';
 import { formatLocation } from '../../core/utils';
 import { LocationService } from '../services/location.service';
 import { StatusChangedPayload } from '../../data/models/ws_events_models';
+import { v4 as uuidv4 } from 'uuid';
 
 // Leaflet package marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -45,16 +46,20 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrls: ['./tracker.component.css'],
 })
 export class TrackerComponent implements OnInit {
+  packageId: string = '';
   deliveryId: string = '';
   packageDetails?: IPackage;
   deliveryDetails?: IDelivery;
   map: any;
   markers: { [key: string]: L.Marker } = {};
   errorMessage: string = '';
+  successMessage: string = '';
   formatLocation = formatLocation;
   status = DeliveryStatus;
   newPackageData?: IPackage;
   newDeliveryData?: IDelivery;
+  packageList: IPackage[] = []
+  deliveryList: IDelivery[] = [];
 
   constructor(
     private packageService: PackageService,
@@ -198,9 +203,16 @@ export class TrackerComponent implements OnInit {
       this.errorMessage = 'No new package data provided';
       return;
     }
-    this.packageService.create(this.newPackageData)
-      .subscribe((packageResponse) => {
+    const newPackageId = uuidv4();
+    this.newPackageData.package_id = newPackageId;
 
+    this.packageService.create(this.newPackageData)
+      .subscribe((response) => {
+        if (response.code === OK) {
+          this.successMessage = response.message as string;
+        } else {
+          this.errorMessage = response.message as string;
+      }
       });
   }
 
@@ -208,14 +220,37 @@ export class TrackerComponent implements OnInit {
   /** ==== CREATE DELIVERY:
   * Create new delivery document on the server */
 
-  createDelivery() { }
+  createDelivery() {
+    this.errorMessage = '';
+    if (!this.newDeliveryData) {
+      this.errorMessage = 'No new delivery data provided';
+      return;
+    }
+    const newDeliveryId = uuidv4();
+    this.newDeliveryData.delivery_id = newDeliveryId;
+
+    this.deliveryService.create(this.newDeliveryData)
+      .subscribe((response) => {
+        if (response.code === OK) {
+          this.successMessage = response.message as string;
+        } else {
+          this.errorMessage = response.message as string;
+      }
+      });
+  }
 
 
   /** ==== GET ALL PACKAGES:
   * Fetch all packages from the server */
 
-  getAllPackages(){
-
+  getAllPackages() {
+    this.packageService.getAll().subscribe((response) => {
+      if (response.data) {
+        const list = response.data;
+        this.packageList = response.data as IPackage[];
+        console.log('packageList: ', this.packageList);
+      }
+    });
   }
 
 
@@ -223,13 +258,33 @@ export class TrackerComponent implements OnInit {
   * Fetch all deliveries from the server */
 
   getAllDeliveries() {
-
+    this.deliveryService.getAll().subscribe((response) => {
+      if (response.data) {
+        const list = response.data;
+        this.packageList = response.data as IPackage[];
+        console.log('packageList: ', this.packageList);
+      }
+    });
   }
 
   /** ==== CREATE PACKAGE:
   * Create new package document on the server */
 
   updatePackage() {
+    this.errorMessage = '';
+    if (!this.packageDetails) {
+      this.errorMessage = 'No new package data provided';
+      return;
+    }
+
+    this.packageService.update(this.packageDetails)
+      .subscribe((response) => {
+        if (response.code === OK) {
+          this.successMessage = response.message as string;
+        } else {
+          this.errorMessage = response.message as string;
+      }
+      });
 
   }
 
@@ -237,5 +292,60 @@ export class TrackerComponent implements OnInit {
   /** ==== CREATE DELIVERY:
   * Create new delivery document on the server */
 
-  updateDelivery() { }
+  updateDelivery() {
+    this.errorMessage = '';
+    if (!this.deliveryDetails) {
+      this.errorMessage = 'No new delivery data provided';
+      return;
+    }
+
+    this.deliveryService.update(this.deliveryDetails)
+      .subscribe((response) => {
+        if (response.code === OK) {
+          this.successMessage = response.message as string;
+        } else {
+          this.errorMessage = response.message as string;
+      }
+      });
+  }
+
+  /** ==== CREATE DELIVERY:
+  * Create new delivery document on the server */
+
+  deletePackage() {
+    this.errorMessage = '';
+    if (!this.packageId) {
+      this.errorMessage = 'No package ID provided';
+      return;
+    }
+
+    this.packageService.delete(this.packageId)
+      .subscribe((response) => {
+        if (response.code === OK) {
+          this.successMessage = response.message as string;
+        } else {
+          this.errorMessage = response.message as string;
+      }
+      });
+  }
+
+  /** ==== CREATE DELIVERY:
+  * Create new delivery document on the server */
+
+  deleteDelivery() {
+    this.errorMessage = '';
+    if (!this.deliveryId) {
+      this.errorMessage = 'No delivery ID provided';
+      return;
+    }
+
+    this.deliveryService.delete(this.deliveryId)
+      .subscribe((response) => {
+        if (response.code === OK) {
+          this.successMessage = response.message as string;
+        } else {
+          this.errorMessage = response.message as string;
+      }
+      });
+  }
 }
