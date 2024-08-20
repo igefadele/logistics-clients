@@ -44,7 +44,7 @@ With a decade of experience building solution-focused enterprise-grade digital p
 
 ### Main Tech Stack
 - NestJS + ExpressJS + NodeJS + TypeScript : API (REST, GraphQL, WebSocket), Micro-Services, etc.
-- NextJS + ExpressJS + NodeJS + TypeScript : Websites and Web Apps, SSR, And many more.
+- RactJS + NextJS + Angular + ExpressJS + NodeJS + TypeScript : Websites and Web Apps, SSR, And many more.
 - Flutter and Dart (With Kotlin, Swift): Android App, iOS App, PWA (Progressive Web Apps), Web App, MacOS Desktop App, Windows Desktop, Linux Desktop.
 - OpenAI, LangChain, LLM, RAG, etc: For Artificial Intelligence products and integrations
 - Different DBs & Platforms: SQL, NoSQL, BaaS, PaaS 

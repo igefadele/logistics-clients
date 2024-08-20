@@ -1,0 +1,188 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Logistics-API-Collection",
+    "collectionId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+    "dateExported": "2024-08-20T18:29:02.490Z",
+    "version": "1.2",
+    "folders": [
+        {
+            "_id": "7547c004-6f1c-4bc1-accb-95d3bb44eff3",
+            "name": "Delivery",
+            "containerId": "",
+            "created": "2024-08-14T19:53:42.738Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "b058aaef-d4d6-4419-8203-9bfa469c59a1",
+            "name": "Package",
+            "containerId": "",
+            "created": "2024-08-16T10:36:20.112Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "bd52ae52-f308-4350-b3d6-ea98c7306d39",
+            "name": "WS",
+            "containerId": "",
+            "created": "2024-08-16T14:15:40.106Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "a4c40446-50b1-43ca-a7f0-28d2d8ff87c7",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "7547c004-6f1c-4bc1-accb-95d3bb44eff3",
+            "name": "findAll",
+            "url": "{{baseUrl}}/api/delivery",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-08-14T19:54:02.769Z",
+            "modified": "2024-08-16T10:31:18.937Z",
+            "headers": []
+        },
+        {
+            "_id": "8b410579-0024-4e31-8952-d037b9d66b5a",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "b058aaef-d4d6-4419-8203-9bfa469c59a1",
+            "name": "findAll",
+            "url": "{{baseUrl}}/api/package",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-08-16T10:36:20.112Z",
+            "modified": "2024-08-16T10:36:43.754Z",
+            "headers": []
+        },
+        {
+            "_id": "0f4b035d-1e3f-4383-bdb7-bb6ee54c6714",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "7547c004-6f1c-4bc1-accb-95d3bb44eff3",
+            "name": "findOne",
+            "url": "{{baseUrl}}/api/delivery/95ca4f3d-7792-4b76-804c-b6a23d59e31f",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-08-16T10:31:52.833Z",
+            "modified": "2024-08-18T12:57:13.984Z",
+            "headers": []
+        },
+        {
+            "_id": "5dcdf94b-ed7d-44e2-ae12-ce00125f9c84",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "b058aaef-d4d6-4419-8203-9bfa469c59a1",
+            "name": "findOne",
+            "url": "{{baseUrl}}/api/package/f3f68498-eb05-4214-b87d-aadfd7168fcc",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-08-16T10:36:20.113Z",
+            "modified": "2024-08-18T12:51:44.393Z",
+            "headers": []
+        },
+        {
+            "_id": "59eea7b7-737f-42a6-8550-f50e3df7387f",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "7547c004-6f1c-4bc1-accb-95d3bb44eff3",
+            "name": "create",
+            "url": "{{baseUrl}}/api/delivery/95ca4f3d-7792-4b76-804c-b6a23d59e31f",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-08-16T10:32:11.887Z",
+            "modified": "2024-08-18T12:59:36.572Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n      \"delivery_id\": \"95ca4f3d-7792-4b76-804c-b6a23d59e31f\",\n      \"package_id\": \"f3f68498-eb05-4214-b87d-aadfd7168fcc\",\n      \"pickup_time\": \"2024-08-16T01:34:14.699Z\",\n      \"start_time\": \"2024-08-17T16:59:50.659Z\",\n      \"end_time\": \"2024-08-16T09:34:14.699Z\",\n      \"location\": {\n        \"lat\": 37.2242,\n        \"lng\": -115.3215,\n        \"_id\": \"66bf48f4c34faeb00856f3d5\"\n      },\n      \"status\": \"open\"\n    }",
+                "form": []
+            }
+        },
+        {
+            "_id": "1fa22bb8-b1d1-49cf-b2b1-f49a5302e593",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "b058aaef-d4d6-4419-8203-9bfa469c59a1",
+            "name": "create",
+            "url": "{{baseUrl}}/api/package/f3f68498-eb05-4214-b87d-aadfd7168fcc",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-08-16T10:36:20.114Z",
+            "modified": "2024-08-18T12:54:45.697Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"package_id\": \"f3f68498-eb05-4214-b87d-aadfd7168fcc\",\n    \"active_delivery_id\": \"95ca4f3d-7792-4b76-804c-b6a23d59e31f\",\n    \"description\": \"Electronics - Smart Watch\",\n    \"weight\": 250,\n    \"width\": 15,\n    \"height\": 30,\n    \"depth\": 6,\n    \"from_name\": \"John Amos\",\n    \"from_address\": \"123 Ogba, Lagos\",\n    \"from_location\": {\n      \"lat\": 37.7749,\n      \"lng\": -122.4194,\n      \"_id\": \"66bf44d477da7bd5fc27c0c1\"\n    },\n    \"to_name\": \"Jane David\",\n    \"to_address\": \"456 Oak Avenue, Abuja\",\n    \"to_location\": {\n      \"lat\": 40.7118,\n      \"lng\": -84.016,\n      \"_id\": \"66bf44d477da7bd5fc27c0c2\"\n    }\n  }",
+                "form": []
+            }
+        },
+        {
+            "_id": "7998117c-ae36-42f8-a0e2-65ac6fece03d",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "7547c004-6f1c-4bc1-accb-95d3bb44eff3",
+            "name": "deleteOne",
+            "url": "{{baseUrl}}/api/delivery/95ca4f3d-7792-4b76-804c-b6a23d59e31f",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2024-08-16T10:32:32.664Z",
+            "modified": "2024-08-18T12:59:24.164Z",
+            "headers": []
+        },
+        {
+            "_id": "c0f6b03f-60d4-4953-8800-83f37288d4e8",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "b058aaef-d4d6-4419-8203-9bfa469c59a1",
+            "name": "deleteOne",
+            "url": "{{baseUrl}}/api/package/f3f68498-eb05-4214-b87d-aadfd7168fcc",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2024-08-16T10:36:20.115Z",
+            "modified": "2024-08-18T12:54:12.242Z",
+            "headers": []
+        },
+        {
+            "_id": "25c795c0-d0d7-4294-a4b7-ac4dad55814d",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "7547c004-6f1c-4bc1-accb-95d3bb44eff3",
+            "name": "updateOne",
+            "url": "{{baseUrl}}/api/delivery/95ca4f3d-7792-4b76-804c-b6a23d59e31f",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2024-08-16T10:32:49.449Z",
+            "modified": "2024-08-18T20:03:31.034Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"_id\": \"66c1f03952c93506be53a152\",\n    \"delivery_id\": \"95ca4f3d-7792-4b76-804c-b6a23d59e31f\",\n    \"package_id\": \"f3f68498-eb05-4214-b87d-aadfd7168fcc\",\n    \"pickup_time\": \"2024-08-16T01:34:14.699Z\",\n    \"start_time\": \"2024-08-18T13:01:19.961Z\",\n    \"end_time\": \"2024-08-16T09:34:14.699Z\",\n    \"location\": {\n      \"lat\": 37.2242,\n      \"lng\": -125.3215,\n      \"_id\": \"66bf48f4c34faeb00856f3d5\"\n    },\n    \"status\": \"picked-up\",\n    \"__v\": 0\n  }",
+                "form": []
+            }
+        },
+        {
+            "_id": "bfae1ce5-3ba7-45aa-981e-0eb5110561e5",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "b058aaef-d4d6-4419-8203-9bfa469c59a1",
+            "name": "updateOne",
+            "url": "{{baseUrl}}/api/package/f3f68498-eb05-4214-b87d-aadfd7168fcc",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2024-08-16T10:36:20.116Z",
+            "modified": "2024-08-18T12:52:47.939Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"_id\": \"66bf44d477da7bd5fc27c0c0\",\n    \"package_id\": \"f3f68498-eb05-4214-b87d-aadfd7168fcc\",\n    \"active_delivery_id\": \"95ca4f3d-7792-4b76-804c-b6a23d59e31f\",\n    \"description\": \"Electronics - Smart Watch\",\n    \"weight\": 250,\n    \"width\": 15,\n    \"height\": 30,\n    \"depth\": 6,\n    \"from_name\": \"John Amos\",\n    \"from_address\": \"123 Ogba, Lagos\",\n    \"from_location\": {\n      \"lat\": 37.7749,\n      \"lng\": -122.4194,\n      \"_id\": \"66bf44d477da7bd5fc27c0c1\"\n    },\n    \"to_name\": \"Jane David\",\n    \"to_address\": \"456 Oak Avenue, Abuja\",\n    \"to_location\": {\n      \"lat\": 40.7118,\n      \"lng\": -84.016,\n      \"_id\": \"66bf44d477da7bd5fc27c0c2\"\n    },\n    \"__v\": 0\n  }",
+                "form": []
+            }
+        },
+        {
+            "_id": "fa14b93e-d8d0-40e3-b0c2-ed9e6d9d7899",
+            "colId": "388a32b5-a403-4580-8259-deeace7a4bd6",
+            "containerId": "bd52ae52-f308-4350-b3d6-ea98c7306d39",
+            "name": "location_change",
+            "url": "",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-08-16T14:15:56.974Z",
+            "modified": "2024-08-16T14:15:56.974Z",
+            "headers": []
+        }
+    ],
+    "settings": {
+        "envId": "bbde426e-be4f-47c0-adb4-cb1d8c79d531"
+    },
+    "ref": "IeBm3Alwuxmxep7sFryHGXrGLdJSAU1FueiI35Qkh9PNZtUrHK_3CwBgtd7m1d97KPPqaAdXJRwSmzFJ-ocVNA"
+}
