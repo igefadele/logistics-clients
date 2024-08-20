@@ -1,18 +1,11 @@
-<div class="tracker-container">
+<div class="p-20 mx-auto my-0 text-center">
   <div>
     <h1 class="text-3xl font-bold">Admin Portal</h1>
-    <!-- <input
-      type="text"
-      [(ngModel)]="deliveryId"
-      placeholder="Enter Package ID"
-      (keyup.enter)="trackDelivery()"
-    />
-    <button class="btn btn-success mx-5" (click)="trackDelivery()">Track</button> -->
   </div>
 
   <div class="my-5">
-    <button class="btn btn-info mx-2" (click)="createPackage()">Create Package</button>
-    <button class="btn btn-warning mx-2" (click)="createDelivery()">Create Delivery</button>
+    <button class="mx-2 btn btn-info" (click)="viewCreatePackage()">Create Package</button>
+    <button class="mx-2 btn btn-warning" (click)="viewCreateDelivery()">Create Delivery</button>
   </div>
 
   <div *ngIf="errorMessage !== ''">
@@ -20,56 +13,39 @@
     <p><strong>Error:</strong> {{ errorMessage }}</p>
   </div>
 
-  <div *ngIf="deliveryDetails && errorMessage === ''" class="hero bg-base-200 min-h-screen">
-    <div class="hero-content flex-col lg:flex-row lg:items-start">
+  <div *ngIf="(packageList && errorMessage === '') || (deliveryList && errorMessage === '')" class="min-h-screen hero bg-base-200">
+    <div class="flex-col hero-content lg:flex-row lg:items-start">
 
-      <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-        <div class="card-body">
-          <h2>Delivery Details</h2>
-          <p><strong>ID:</strong> {{ deliveryDetails.delivery_id }}</p>
-          <p><strong>Status:</strong> {{ deliveryDetails.status }}</p>
-          <p><strong>Current Location:</strong> {{ formatLocation(deliveryDetails.location) }}</p>
-
-          <h3>Timing</h3>
-          <p><strong>Pickup Time:</strong> {{ deliveryDetails.pickup_time }}</p>
-          <p><strong>Start Time:</strong> {{ deliveryDetails.start_time }}</p>
-          <p><strong>End Time:</strong> {{ deliveryDetails.end_time }}</p>
-        </div>
+      <div *ngIf="packageList">
+        <h2>Package List</h2>
+        <ul class="text-left">
+          <li *ngFor="let package of packageList" (click)="viewPackageDetail(package)" class="w-full max-w-sm my-4 shadow-2xl card bg-base-100 shrink-0">
+            <div>
+              <div class=" card-body">
+                <p><strong>ID:</strong> {{ package.package_id }}</p>
+                <p><strong>Description:</strong> {{ package.description }}</p>
+                <p><strong>Active Delivery ID:</strong> {{ package.active_delivery_id }}</p>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
 
-      <div *ngIf="packageDetails" class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-        <div class="card-body">
-          <h2 >Package Details</h2>
-          <p><strong>ID:</strong> {{ packageDetails.package_id }}</p>
-          <p><strong>Description:</strong> {{ packageDetails.description }}</p>
-
-          <h3 >Dimensions</h3>
-          <p>
-            <span><strong>Weight:</strong> {{ packageDetails.weight }}</span>
-            <span> <strong>Width:</strong> {{ packageDetails.width }}</span>
-          </p>
-          <p>
-            <span> <strong>Height:</strong> {{ packageDetails.height }}</span>
-            <span> <strong>Depth:</strong> {{ packageDetails.depth }}</span>
-          </p>
-
-          <h3 >Sender</h3>
-          <p><strong>Name:</strong> {{ packageDetails.from_name }}</p>
-          <p> <strong>Address:</strong> {{ packageDetails.from_address }}</p>
-          <p><strong>Location:</strong> {{ formatLocation(packageDetails.from_location) }}</p>
-
-          <h3 >Receiver</h3>
-          <p><strong>Name:</strong> {{ packageDetails.to_name }}</p>
-          <p> <strong>Address:</strong> {{ packageDetails.to_address }}</p>
-          <p> <strong>Location:</strong> {{ formatLocation(packageDetails.to_location) }}</p>
-        </div>
+      <div *ngIf="deliveryList">
+        <h2>Delivery List</h2>
+        <ul class="text-left">
+          <li *ngFor="let delivery of deliveryList" (click)="viewDeliveryDetail(delivery)" class="w-full max-w-sm my-4 shadow-2xl card bg-base-100 shrink-0">
+            <div>
+              <div class=" card-body">
+                <p><strong>ID:</strong> {{ delivery.delivery_id }}</p>
+                <p><strong>Status:</strong> {{ delivery.status }}</p>
+                <p><strong>Package ID:</strong> {{ delivery.package_id }}</p>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
 
     </div>
   </div>
-  <div *ngIf="deliveryDetails">
-    <div id="map" style="height: 600px;"></div>
-  </div>
-
-
 </div>

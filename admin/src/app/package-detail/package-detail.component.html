@@ -1,0 +1,50 @@
+<div class="p-20 mx-auto my-0 text-center">
+  <div>
+    <h1 class="text-3xl font-bold">Package Details</h1>
+  </div>
+
+  <div *ngIf="packageDetails && errorMessage === ''" class="my-5" >
+    <button class="mx-2 btn btn-info" (click)="viewEditPackage()">Edit Package</button>
+    <button class="mx-2 btn btn-error" (click)="deletePackage()">Delete Package</button>
+  </div>
+
+  <div *ngIf="errorMessage !== ''">
+    <h2>Error</h2>
+    <p><strong>Error:</strong> {{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="packageDetails && errorMessage === ''" class="min-h-screen hero bg-base-200">
+    <div class="hero-content">
+      <div class="w-full max-w-sm shadow-2xl card bg-base-100 shrink-0">
+        <div class="card-body">
+          <h2 >Package Details</h2>
+          <p><strong>ID:</strong> {{ packageDetails.package_id }}</p>
+          <p><strong>Description:</strong> {{ packageDetails.description }}</p>
+
+          <h3 >Dimensions</h3>
+          <p>
+            <span><strong>Weight:</strong> {{ packageDetails.weight }}</span>
+            <span> <strong>Width:</strong> {{ packageDetails.width }}</span>
+          </p>
+          <p>
+            <span> <strong>Height:</strong> {{ packageDetails.height }}</span>
+            <span> <strong>Depth:</strong> {{ packageDetails.depth }}</span>
+          </p>
+
+          <h3 >Sender</h3>
+          <p><strong>Name:</strong> {{ packageDetails.from_name }}</p>
+          <p> <strong>Address:</strong> {{ packageDetails.from_address }}</p>
+          <p><strong>Location:</strong> {{ formatLocation(packageDetails.from_location) }}</p>
+
+          <h3 >Receiver</h3>
+          <p><strong>Name:</strong> {{ packageDetails.to_name }}</p>
+          <p> <strong>Address:</strong> {{ packageDetails.to_address }}</p>
+          <p> <strong>Location:</strong> {{ formatLocation(packageDetails.to_location) }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="packageDetails">
+    <div id="map" style="height: 600px;"></div>
+  </div>
+</div>

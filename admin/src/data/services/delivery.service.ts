@@ -9,8 +9,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE_URL, DELIVERY } from '../../core/constants';
-import { ResponseHandler } from '../../data/models/response_handler';
-import { IDelivery } from '../../data/models/delivery.model';
+import { ResponseHandler } from '../models/response_handler';
+import { IDelivery } from '../models/delivery.model';
 
 @Injectable({
   providedIn: 'root',

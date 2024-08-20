@@ -46,3 +46,11 @@ export const FROM_LOCATION_TITLE = "From Location";
 export const TO_LOCATION_TITLE = "To Location";
 export const CURRENT_LOCATION_TITLE = "Current Location";
 export const MAP = 'map';
+
+export const ROUTE_HOME = '/'
+export const ROUTE_PACKAGE_DETAIL = '/package-detail'
+export const ROUTE_DELIVERY_DETAIL = '/delivery-detail';
+export const ROUTE_CREATE_PACKAGE = '/create-package';
+export const ROUTE_CREATE_DELIVERY = '/create-delivery';
+export const ROUTE_EDIT_PACKAGE = '/edit-package';
+export const ROUTE_EDIT_DELIVERY = '/edit-delivery';

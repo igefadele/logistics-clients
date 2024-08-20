@@ -9,8 +9,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE_URL, PACKAGE } from '../../core/constants';
-import { ResponseHandler } from '../../data/models/response_handler';
-import { IPackage } from '../../data/models/package.model';
+import { ResponseHandler } from '../models/response_handler';
+import { IPackage } from '../models/package.model';
 
 @Injectable({
   providedIn: 'root',

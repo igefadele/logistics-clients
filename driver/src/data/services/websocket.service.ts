@@ -8,8 +8,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { API_WS_BASE_URL } from '../../core/constants';
-import { DeliveryIncomingEventPayload, DeliveryOutgoingEventPayload } from '../../data/models/ws_events_models';
-import { IncomingWsEventType, OutgoingWsEventType } from '../../data/enums';
+import { DeliveryIncomingEventPayload, DeliveryOutgoingEventPayload } from '../models/ws_events_models';
+import { IncomingWsEventType, OutgoingWsEventType } from '../enums';
 
 @Injectable({
   providedIn: 'root',

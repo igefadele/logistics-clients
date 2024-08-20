@@ -6,8 +6,8 @@ LOCATION SERVICE
 
 import { Injectable } from '@angular/core';
 import { WebSocketService } from './websocket.service';
-import { OutgoingWsEventType, WsEventType } from '../../data/enums';
-import { LocationChangedPayload } from '../../data/models/ws_events_models';
+import { OutgoingWsEventType, WsEventType } from '../enums';
+import { LocationChangedPayload } from '../models/ws_events_models';
 
 @Injectable({
   providedIn: 'root',

@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { TrackerComponent } from './tracker/tracker.component';
-import { PackageService } from './services/package.service';
-import { DeliveryService } from './services/delivery.service';
-import { WebSocketService } from './services/websocket.service';
+import { PackageService } from '../data/services/package.service';
+import { DeliveryService } from '../data/services/delivery.service';
+import { WebSocketService } from '../data/services/websocket.service';
 
 @NgModule({
   declarations: [
