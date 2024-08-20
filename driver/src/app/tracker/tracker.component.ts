@@ -11,14 +11,14 @@ import { WebSocketService } from '../services/websocket.service';
 import * as L from 'leaflet';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IPackage } from '../../core/models/package.model';
-import { IDelivery } from '../../core/models/delivery.model';
-import { ILocation } from '../../core/models/location.model';
-import { DeliveryStatus, IncomingWsEventType, OutgoingWsEventType, WsEventType } from '../../core/enums';
+import { IPackage } from '../../data/models/package.model';
+import { IDelivery } from '../../data/models/delivery.model';
+import { ILocation } from '../../data/models/location.model';
+import { DeliveryStatus, IncomingWsEventType, OutgoingWsEventType, WsEventType } from '../../data/enums';
 import { CURRENT_LOCATION, CURRENT_LOCATION_TITLE, FROM_LOCATION, FROM_LOCATION_TITLE, MAP, TO_LOCATION, TO_LOCATION_TITLE } from '../../core/constants';
 import { formatLocation } from '../../core/utils';
 import { LocationService } from '../services/location.service';
-import { StatusChangedPayload } from '../../core/models/ws_events_models';
+import { StatusChangedPayload } from '../../data/models/ws_events_models';
 
 // Leaflet package marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';

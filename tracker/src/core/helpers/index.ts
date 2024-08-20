@@ -4,9 +4,9 @@ BASE HELPERS
 */
 
 
-import { IDelivery } from "../models/delivery.model";
-import { IPackage } from "../models/package.model";
-import { EntityKey } from "../enums";
+import { IDelivery } from "../../data/models/delivery.model";
+import { IPackage } from "../../data/models/package.model";
+import { EntityKey } from "../../data/enums";
 
 interface BaseEntity extends Document {
   _id: string;

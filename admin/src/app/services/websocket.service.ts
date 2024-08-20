@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { API_WS_BASE_URL } from '../../core/constants';
 import { DeliveryIncomingEventPayload, DeliveryOutgoingEventPayload } from '../../core/models/ws_events_models';
-import { IncomingWsEventType, OutgoingWsEventType } from '../../core/enums';
+import { IncomingWsEventType, OutgoingWsEventType } from '../../data/enums';
 
 @Injectable({
   providedIn: 'root',

@@ -4,7 +4,7 @@ UTILITY FUNCTIONS
 =======
 */
 
-import { ILocation } from "../models/location.model";
+import { ILocation } from "../../data/models/location.model";
 
 /** Function to check if any property of an object is empty or not provided */
 export function hasEmptyFields(data: { [x: string]: any; }) {

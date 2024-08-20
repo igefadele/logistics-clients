@@ -5,7 +5,7 @@ DELIVERY MODEL
 /// Data Model for the Delivery Entity
 */
 
-import { DeliveryStatus } from "../enums";
+import { DeliveryStatus } from "../../data/enums";
 import { ILocation } from "./location.model";
 
 export interface IDelivery {

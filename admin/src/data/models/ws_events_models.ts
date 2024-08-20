@@ -4,7 +4,7 @@ WEBSOCKET EVENTS PAYLOADS DATA MODELS
 */
 
 import { IDelivery } from './delivery.model';
-import { DeliveryStatus, WsEventType } from '../enums';
+import { DeliveryStatus, WsEventType } from '../../data/enums';
 import { ILocation } from './location.model';
 
 /** Data model for the location_changed event payload */

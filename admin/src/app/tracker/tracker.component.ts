@@ -11,14 +11,14 @@ import { WebSocketService } from '../services/websocket.service';
 import * as L from 'leaflet';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IPackage } from '../../core/models/package.model';
-import { IDelivery } from '../../core/models/delivery.model';
-import { ILocation } from '../../core/models/location.model';
-import { DeliveryStatus, IncomingWsEventType, OutgoingWsEventType, WsEventType } from '../../core/enums';
+import { IPackage } from '../../data/models/package.model';
+import { IDelivery } from '../../data/models/delivery.model';
+import { ILocation } from '../../data/models/location.model';
+import { DeliveryStatus, IncomingWsEventType, OutgoingWsEventType, WsEventType } from '../../data/enums';
 import { CURRENT_LOCATION, CURRENT_LOCATION_TITLE, FROM_LOCATION, FROM_LOCATION_TITLE, MAP, TO_LOCATION, TO_LOCATION_TITLE } from '../../core/constants';
 import { formatLocation } from '../../core/utils';
 import { LocationService } from '../services/location.service';
-import { StatusChangedPayload } from '../../core/models/ws_events_models';
+import { StatusChangedPayload } from '../../data/models/ws_events_models';
 
 // Leaflet package marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -53,6 +53,8 @@ export class TrackerComponent implements OnInit {
   errorMessage: string = '';
   formatLocation = formatLocation;
   status = DeliveryStatus;
+  newPackageData?: IPackage;
+  newDeliveryData?: IDelivery;
 
   constructor(
     private packageService: PackageService,
@@ -156,7 +158,7 @@ export class TrackerComponent implements OnInit {
   }
 
 
-  /** ==== LISTEN FOR UPDATES
+  /** ==== LISTEN FOR UPDATES:
   Listen for WebSocket updates/events */
 
   listenForUpdates(deliveryId: string) {
@@ -171,10 +173,9 @@ export class TrackerComponent implements OnInit {
     });
   }
 
-    /** ==== CHANGE DELIVERY STATUS
+    /** ==== CHANGE DELIVERY STATUS:
   Send delivery status change WebSocket updates/events to server */
   changeStatus(status: DeliveryStatus) {
-    this.deliveryDetails = undefined;
     this.errorMessage = '';
     if (!this.deliveryId) {
       this.errorMessage = 'No deliveryId provided';
@@ -187,4 +188,54 @@ export class TrackerComponent implements OnInit {
     }
     this.webSocketService.sendEvent(OutgoingWsEventType.status_changed, statusEventPayload);
   }
+
+  /** ==== CREATE PACKAGE:
+  * Create new package document on the server */
+
+  createPackage() {
+    this.errorMessage = '';
+    if (!this.newPackageData) {
+      this.errorMessage = 'No new package data provided';
+      return;
+    }
+    this.packageService.create(this.newPackageData)
+      .subscribe((packageResponse) => {
+
+      });
+  }
+
+
+  /** ==== CREATE DELIVERY:
+  * Create new delivery document on the server */
+
+  createDelivery() { }
+
+
+  /** ==== GET ALL PACKAGES:
+  * Fetch all packages from the server */
+
+  getAllPackages(){
+
+  }
+
+
+  /** ==== GET ALL DELIVERIES:
+  * Fetch all deliveries from the server */
+
+  getAllDeliveries() {
+
+  }
+
+  /** ==== CREATE PACKAGE:
+  * Create new package document on the server */
+
+  updatePackage() {
+
+  }
+
+
+  /** ==== CREATE DELIVERY:
+  * Create new delivery document on the server */
+
+  updateDelivery() { }
 }
