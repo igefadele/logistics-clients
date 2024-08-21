@@ -20,8 +20,8 @@ You can easily build on this to create a full-fledged Real-time Logistics and Co
 - And many more...
 
 ### This Repo:
-== This Repo contains the Client Apps for Customer, Driver, and Admin. The API and the Websocket backend, are deployed on a separate [Repo](https://github.com/igefadele/logistics-api).
-== Get the Clients apps (frontend apps codes) on: [Logistics/Courier API Repo](https://github.com/igefadele/logistics-api)
+- This Repo contains the Client Apps for Customer, Driver, and Admin. The API and the Websocket backend, are deployed on a separate [Repo](https://github.com/igefadele/logistics-api).
+- Get the Clients apps (frontend apps codes) on: [Logistics/Courier API Repo](https://github.com/igefadele/logistics-api)
 
 ### Note: 
 - If you are using this codebase in an enterprise software, I require you to give proper reference and attribution to me as the Author. Also, I would love to help your organisation in getting the best out of this project and your intended app. So reach out to me: [Ige Fadele (Mr FIA)](https://linkedin.com/in/igefadele)
