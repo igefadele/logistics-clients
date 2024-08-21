@@ -30,7 +30,12 @@
       </div>
     </div>
   </div>
-  <div *ngIf="deliveryDetails">
+
+  <div *ngIf="!deliveryDetails && errorMessage === ''" class="my-5">
+    <h2>Loading ...</h2>
+  </div>
+
+  <div>
     <div id="map" style="height: 600px;"></div>
   </div>
 </div>

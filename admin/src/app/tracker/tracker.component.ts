@@ -231,14 +231,12 @@ export class TrackerComponent implements OnInit {
   /** ==== VIEW PACKAGE DETAIL ROUTE: */
   viewPackageDetail(packageData: IPackage) {
     this.packageDetails = packageData;
-    this.datastoreService.setObsData(SavedDataKey.package, this.packageDetails);
     this.router.navigate([ROUTE_PACKAGE_DETAIL, packageData.package_id]);
   }
 
   /** ==== VIEW DELIVERY DETAIL ROUTE: */
   viewDeliveryDetail(deliveryData: IDelivery) {
     this.deliveryDetails = deliveryData;
-    this.datastoreService.setObsData(SavedDataKey.delivery, this.deliveryDetails);
     this.router.navigate([ROUTE_DELIVERY_DETAIL, deliveryData.delivery_id]);
   }
 

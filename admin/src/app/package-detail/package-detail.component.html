@@ -44,7 +44,12 @@
       </div>
     </div>
   </div>
-  <div *ngIf="packageDetails">
+
+  <div *ngIf="!packageDetails && errorMessage === ''" class="my-5">
+    <h2>Loading ...</h2>
+  </div>
+
+  <div>
     <div id="map" style="height: 600px;"></div>
   </div>
 </div>

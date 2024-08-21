@@ -11,6 +11,7 @@ import { ILocation } from '../../data/models/location.model';
 import { DeliveryStatus } from '../../data/enums';
 import { CommonModule } from '@angular/common';
 import { DatastoreService } from '../../data/services/datastore.service';
+import { PackageService } from '../../data/services/package.service';
 
 @Component({
   selector: 'app-create-delivery',
@@ -39,25 +40,26 @@ export class CreateDeliveryComponent {
   constructor(
     private modalService: NgbModal,
     private deliveryService: DeliveryService,
+    private packageService: PackageService,
     private datastoreService: DatastoreService,
   ) { }
 
   ngOnInit(): void {
-    this.datastoreService.packageList$
-      .subscribe((list: IPackage[] | null) => {
-        if (list) {
-          this.packageList = list;
-        } else {
-          console.log('No package list found');
-        }
-      })
-
-      this.datastoreService.deliveryList$
-      .subscribe((list: IDelivery[] | null) => {
-        if (list) {
-          this.deliveryList = list;
+    this.deliveryService.getAll()
+      .subscribe((response) => {
+        if (response.data) {
+          this.deliveryList = response.data as IDelivery[];
         } else {
           console.log('No delivery list found');
+        }
+      });
+
+    this.packageService.getAll()
+      .subscribe((response) => {
+        if (response.data) {
+          this.packageList = response.data as IPackage[];
+        } else {
+          console.log('No package list found');
         }
       })
   }

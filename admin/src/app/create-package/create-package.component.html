@@ -3,26 +3,31 @@
     <h1 class="text-3xl font-bold">Create Package</h1>
   </div>
 
+  <div *ngIf="errorMessage !== ''">
+    <h2>Error</h2>
+    <p><strong>Error:</strong> {{ errorMessage }}</p>
+  </div>
+
   <form (ngSubmit)="createPackage()">
-    <input type="textarea" [(ngModel)]="newPackageData.description" name="description" placeholder="Description" required>
-    <input type="number" [(ngModel)]="newPackageData.weight" name="weight" placeholder="Weight" required>
-    <input type="number" [(ngModel)]="newPackageData.width" name="width" placeholder="Width" required>
-    <input type="number" [(ngModel)]="newPackageData.height" name="height" placeholder="Height" required>
-    <input type="number" [(ngModel)]="newPackageData.depth" name="depth"  placeholder="Depth" required>
+    <input type="textarea" [(ngModel)]="newPackageData.description" name="description" placeholder="Description" required />
+    <input type="number" [(ngModel)]="newPackageData.weight" name="weight" placeholder="Weight" required />
+    <input type="number" [(ngModel)]="newPackageData.width" name="width" placeholder="Width" required />
+    <input type="number" [(ngModel)]="newPackageData.height" name="height" placeholder="Height" required />
+    <input type="number" [(ngModel)]="newPackageData.depth" name="depth"  placeholder="Depth" required />
 
-    <input type="text" [(ngModel)]="newPackageData.from_name" name="from_name" placeholder="From Name" required>
-    <input type="text" [(ngModel)]="newPackageData.from_address" name="from_address" placeholder="From Address" required>
-    <input type="text" [(ngModel)]="newPackageData.to_name" name="to_name" placeholder="To Name" required>
-    <input type="text" [(ngModel)]="newPackageData.to_address" name="to_address" placeholder="To Address" required>
+    <input type="text" [(ngModel)]="newPackageData.from_name" name="from_name" placeholder="From Name" required />
+    <input type="text" [(ngModel)]="newPackageData.from_address" name="from_address" placeholder="From Address" required />
+    <input type="text" [(ngModel)]="newPackageData.to_name" name="to_name" placeholder="To Name" required />
+    <input type="text" [(ngModel)]="newPackageData.to_address" name="to_address" placeholder="To Address" required />
 
-  <!--   <input type="number" [(ngModel)]="fromLocation.lat" placeholder="From Location Latitude" required>
-    <input type="number" [(ngModel)]="fromLocation.lng" placeholder="From Location Longitude" required>
+    <input type="number" [(ngModel)]="fromLocation.lat" name="from_lat" placeholder="From Location Latitude" required />
+    <input type="number" [(ngModel)]="fromLocation.lng" name="from_lng" placeholder="From Location Longitude" required />
 
-    <input type="number" [(ngModel)]="toLocation.lat" placeholder="To Location Latitude" required>
-    <input type="number" [(ngModel)]="toLocation.lng" placeholder="To Location Longitude" required> -->
+    <input type="number" [(ngModel)]="toLocation.lat" name="to_lat" placeholder="To Location Latitude" required />
+    <input type="number" [(ngModel)]="toLocation.lng" name="to_lng" placeholder="To Location Longitude" required />
 
-    <button type="button" (click)="openDeliveryModal()">Select Delivery</button>
-    <button type="submit">Create</button>
+    <button type="button" (click)="openDeliveryModal()" class="mx-2 btn btn-info" >Select Delivery</button>
+    <button type="submit" class="mx-2 btn btn-success">Create</button>
   </form>
 
   <ng-template #deliveryModal let-modal>

@@ -3,6 +3,21 @@
     <h1 class="text-3xl font-bold">Admin Portal</h1>
   </div>
 
+  <input
+    type="text"
+    [(ngModel)]="packageId"
+    placeholder="Enter Package ID"
+
+  />
+  <input type="number" [(ngModel)]="packageId" name="weight" placeholder="Weight" required>
+    <input type="number" [(ngModel)]="packageId" name="width" placeholder="Width" required>
+    <label class="flex items-center gap-2 input input-bordered">
+      Description
+      <input type="textarea" [(ngModel)]="packageId" name="description" placeholder="Description" required>
+    </label>
+
+
+
   <div class="my-5">
     <button class="mx-2 btn btn-info" (click)="viewCreatePackage()">Create Package</button>
     <button class="mx-2 btn btn-warning" (click)="viewCreateDelivery()">Create Delivery</button>

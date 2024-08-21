@@ -10,6 +10,7 @@ import { ILocation } from '../../data/models/location.model';
 import { FormsModule } from '@angular/forms';
 import { DatastoreService } from '../../data/services/datastore.service';
 import { CommonModule } from '@angular/common';
+import { DeliveryService } from '../../data/services/delivery.service';
 
 @Component({
   selector: 'app-create-package',
@@ -39,23 +40,24 @@ export class CreatePackageComponent implements OnInit{
   constructor(
     private modalService: NgbModal,
     private packageService: PackageService,
+    private deliveryService: DeliveryService,
     private datastoreService: DatastoreService,
   ) { }
 
   ngOnInit(): void {
-    this.datastoreService.packageList$
-      .subscribe((list: IPackage[] | null) => {
-        if (list) {
-          this.packageList = list;
+    this.packageService.getAll()
+      .subscribe((response) => {
+        if (response.data) {
+          this.packageList = response.data as IPackage[];
         } else {
           console.log('No package list found');
         }
       })
 
-      this.datastoreService.deliveryList$
-      .subscribe((list: IDelivery[] | null) => {
-        if (list) {
-          this.deliveryList = list;
+      this.deliveryService.getAll()
+      .subscribe((response) => {
+        if (response.data) {
+          this.deliveryList = response.data as IDelivery[];
         } else {
           console.log('No delivery list found');
         }
@@ -95,10 +97,13 @@ export class CreatePackageComponent implements OnInit{
 
     this.packageService.create(this.newPackageData)
       .subscribe((response) => {
+        console.log('response: ', response);
         if (response.code === OK) {
           this.successMessage = response.message as string;
+          console.log('successMessage: ', this.successMessage);
         } else {
           this.errorMessage = response.message as string;
+          console.log('errorMessage: ', this.errorMessage);
        }
      });
   }
