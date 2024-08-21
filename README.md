@@ -16,10 +16,12 @@ You can easily build on this to create a full-fledged Real-time Logistics and Co
 
 - Routes Management: Set.
 - Dependency Injection: Set.
-- Modules, Repositories, Providers, Services, Utils, Values, Themes, etc: All Structure Set.
+- Modules, Repositories, Providers, Utils, Services, Values, Themes, etc: All Structure Set.
 - And many more...
 
-== This Repo contains the REST API and the Websocket backend, the Clients application for Customer, Driver, and Admin are deployed on a separate Repo.
+### This Repo:
+== This Repo contains the Client Apps for Customer, Driver, and Admin. The API and the Websocket backend, are deployed on a separate [Repo](https://github.com/igefadele/logistics-api).
+== Get the Clients apps (frontend apps codes) on: [Logistics/Courier API Repo](https://github.com/igefadele/logistics-api)
 
 ### Note: 
 - If you are using this codebase in an enterprise software, I require you to give proper reference and attribution to me as the Author. Also, I would love to help your organisation in getting the best out of this project and your intended app. So reach out to me: [Ige Fadele (Mr FIA)](https://linkedin.com/in/igefadele)
@@ -38,8 +40,8 @@ You can easily build on this to create a full-fledged Real-time Logistics and Co
 
 With a decade of experience building solution-focused enterprise-grade digital products (Software, Mobile Apps, Web Apps, Desktop Apps, etc.), my experience and skillset will be priceless for the success of your organisation's projects/products.
 
-### How I can contribute:
-- Provide your team with highly useful technical guidelines, industry best practices and many more for a productive product development experience.
+### How I can contribute/help:
+- I can provide your team with highly useful technical guidelines, industry best practices and many more for a productive product development experience.
 - With experience across technical, analytical, and business corridors, I could provide your team and organisation with insights, guidance, etc. which will help you achieve your business bottomline quicker and cleaner.
 
 ### Main Tech Stack
