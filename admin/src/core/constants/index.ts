@@ -14,7 +14,7 @@ export const TRACKER_BASE_URL = "http://localhost:4200"; */
 // REMOTE
 export const API_BASE_URL = "https://logistics-api-07i7.onrender.com/api";
 export const API_WS_BASE_URL = "https://logistics-api-07i7.onrender.com";
-export const TRACKER_BASE_URL = " https://logistics-admin.onrender.com";
+export const TRACKER_BASE_URL = " https://logistics-admin-t9z7.onrender.com";
 
 
 export const POST = "POST";
