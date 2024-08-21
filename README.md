@@ -29,13 +29,10 @@ You can easily build on this to create a full-fledged Real-time Logistics and Co
 
 ## Demos
 
-[API: https://logistics-api-07i7.onrender.com](https://logistics-api-07i7.onrender.com)
-
-[TRACKER/CUSTOMER: https://logistics-tracker.onrender.com](https://logistics-tracker.onrender.com)
-
-[DRIVER: https://logistics-driver.onrender.com](https://logistics-driver.onrender.com)
-
-[ADMIN: https://logistics-admin-t9z7.onrender.com](https://logistics-admin-t9z7.onrender.com)
+- API: [https://logistics-api-07i7.onrender.com](https://logistics-api-07i7.onrender.com)
+- TRACKER/CUSTOMER: [https://logistics-tracker.onrender.com](https://logistics-tracker.onrender.com)
+- DRIVER: [https://logistics-driver.onrender.com](https://logistics-driver.onrender.com)
+- ADMIN: [https://logistics-admin-t9z7.onrender.com](https://logistics-admin-t9z7.onrender.com)
 
 
 ## Tools, Packages, & Dependencies
