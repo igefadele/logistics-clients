@@ -1,1 +1,84 @@
-<p>edit-package works!</p>
+<div class="p-20 mx-auto my-0 text-center">
+  <div>
+    <h1 class="text-3xl font-bold">Edit Package</h1>
+  </div>
+
+  <div *ngIf="errorMessage !== ''">
+    <h2>Error</h2>
+    <p><strong>Error:</strong> {{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="successMessage !== ''">
+    <h2>Success</h2>
+    <p> {{ successMessage }}</p>
+  </div>
+
+  <div *ngIf="successMessage === '' && errorMessage === ''">
+    <form (ngSubmit)="createPackage()">
+      <div class="flex flex-col items-center lg:flex-row">
+        <input type="text" [(ngModel)]="newPackageData.description" name="description" placeholder="Description" required />
+        <!-- <textarea [(ngModel)]="newPackageData.description" class="textarea textarea-bordered" name="description" placeholder="Description" required></textarea> -->
+      </div>
+
+      <div class="flex flex-col items-center lg:flex-row">
+        <input type="number" [(ngModel)]="newPackageData.weight" name="weight" placeholder="Weight" required class="lg:mr-4" />
+        <input type="number" [(ngModel)]="newPackageData.width" name="width" placeholder="Width" required class="lg:mr-4" />
+        <input type="number" [(ngModel)]="newPackageData.height" name="height" placeholder="Height" required class="lg:mr-4" />
+        <input type="number" [(ngModel)]="newPackageData.depth" name="depth"  placeholder="Depth" required class="" />
+      </div>
+
+      <div class="flex flex-col items-center lg:flex-row">
+        <input type="text" [(ngModel)]="newPackageData.from_name" name="from_name" placeholder="From Name" required class="lg:mr-4" />
+        <input type="text" [(ngModel)]="newPackageData.from_address" name="from_address" placeholder="From Address" required />
+      </div>
+
+      <div class="flex flex-col items-center lg:flex-row">
+        <input type="text" [(ngModel)]="newPackageData.to_name" name="to_name" placeholder="To Name" required class="lg:mr-4" />
+        <input type="text" [(ngModel)]="newPackageData.to_address" name="to_address" placeholder="To Address" required />
+      </div>
+
+      <div class="flex flex-col items-center lg:flex-row">
+        <input type="number" [(ngModel)]="fromLocation.lat" name="from_lat" placeholder="From Location Latitude" required class="lg:mr-4" />
+        <input type="number" [(ngModel)]="fromLocation.lng" name="from_lng" placeholder="From Location Longitude" required />
+      </div>
+
+      <div class="flex flex-col items-center lg:flex-row">
+        <input type="number" [(ngModel)]="toLocation.lat" name="to_lat" placeholder="To Location Latitude" required class="lg:mr-4" />
+        <input type="number" [(ngModel)]="toLocation.lng" name="to_lng" placeholder="To Location Longitude" required />
+      </div>
+
+      <!-- Open the modal using ID.showModal() method -->
+      <button  class="mx-2 my-2 btn btn-info" onclick="my_modal_1.showModal()">open modal</button>
+      <dialog id="my_modal_1" class="modal">
+        <div class="modal-box">
+
+          <div *ngIf="deliveryList">
+            <h3>Select Delivery</h3>
+            <ul>
+              <li *ngFor="let delivery of deliveryList" (click)="selectDelivery(delivery.delivery_id)" class="w-full max-w-sm my-4 shadow-2xl card bg-base-100 shrink-0" >
+                <div>
+                  <div class=" card-body">
+                    <p><strong>ID:</strong> {{ delivery.delivery_id }}</p>
+                    <p><strong>Status:</strong> {{ delivery.status }}</p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="modal-action">
+            <form method="dialog">
+              <button class="btn">Close</button>
+            </form>
+          </div>
+
+        </div>
+      </dialog>
+
+      <div class="flex justify-center lg:flex-row">
+        <button type="button" (click)="openDeliveryModal()" class="mx-2 my-2 basis-1/4 btn btn-info" >Select Delivery</button>
+        <button type="submit" class="mx-2 my-2 basis-2/4 btn btn-success">Create</button>
+      </div>
+    </form>
+  </div>
+</div>

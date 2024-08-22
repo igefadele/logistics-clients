@@ -94,6 +94,9 @@ export class CreatePackageComponent implements OnInit{
 
     const newPackageId = uuidv4();
     this.newPackageData.package_id = newPackageId;
+    this.newPackageData.from_location = this.fromLocation;
+    this.newPackageData.to_location = this.toLocation;
+
 
     this.packageService.create(this.newPackageData)
       .subscribe((response) => {
