@@ -1,5 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
 import { formatLocation } from '../../core/utils';
 import { IDelivery } from '../../data/models/delivery.model';
 import { DeliveryService } from '../../data/services/delivery.service';
@@ -10,7 +9,6 @@ import { FormsModule } from '@angular/forms';
 import { ILocation } from '../../data/models/location.model';
 import { DeliveryStatus } from '../../data/enums';
 import { CommonModule } from '@angular/common';
-import { DatastoreService } from '../../data/services/datastore.service';
 import { PackageService } from '../../data/services/package.service';
 
 @Component({
@@ -27,24 +25,28 @@ export class CreateDeliveryComponent {
   errorMessage: string = '';
   successMessage: string = '';
   formatLocation = formatLocation;
-  newDeliveryData: IDelivery = {} as IDelivery;
+  currentTime = new Date();
 
   currentLocation: ILocation = <ILocation>{};
   deliveryStatusList = Object.values(DeliveryStatus);
   packageList: IPackage[] = [];
   deliveryList: IDelivery[] = [];
 
-  @ViewChild('packageModal') packageModal: any;
-  @ViewChild('deliveryModal') deliveryModal: any;
+  newDeliveryData: IDelivery = {
+    start_time: this.currentTime,
+    pickup_time: this.currentTime,
+    end_time: this.currentTime,
+    location: this.currentLocation,
+  } as IDelivery;
 
   constructor(
-    private modalService: NgbModal,
     private deliveryService: DeliveryService,
     private packageService: PackageService,
-    private datastoreService: DatastoreService,
   ) { }
 
   ngOnInit(): void {
+    this.newDeliveryData.status = DeliveryStatus.open;
+
     this.deliveryService.getAll()
       .subscribe((response) => {
         if (response.data) {
@@ -62,14 +64,6 @@ export class CreateDeliveryComponent {
           console.log('No package list found');
         }
       })
-  }
-
-  openPackageModal() {
-    this.modalService.open(this.packageModal);
-  }
-
-  openDeliveryModal() {
-    this.modalService.open(this.deliveryModal);
   }
 
   selectPackage(id: string) {
@@ -93,15 +87,19 @@ export class CreateDeliveryComponent {
     }
     const newDeliveryId = uuidv4();
     this.newDeliveryData.delivery_id = newDeliveryId;
+    this.newDeliveryData.location = this.currentLocation;
+
 
     this.deliveryService.create(this.newDeliveryData)
       .subscribe((response) => {
         if (response.code === OK) {
           this.successMessage = response.message as string;
+          console.log('successMessage: ', this.successMessage);
         } else {
           this.errorMessage = response.message as string;
+          console.log('errorMessage: ', this.errorMessage);
       }
-      });
+    });
   }
 
 

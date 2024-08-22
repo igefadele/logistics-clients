@@ -8,7 +8,6 @@ import { OK } from '../../core/constants';
 import { IDelivery } from '../../data/models/delivery.model';
 import { ILocation } from '../../data/models/location.model';
 import { FormsModule } from '@angular/forms';
-import { DatastoreService } from '../../data/services/datastore.service';
 import { CommonModule } from '@angular/common';
 import { DeliveryService } from '../../data/services/delivery.service';
 
@@ -41,7 +40,6 @@ export class CreatePackageComponent implements OnInit{
     private modalService: NgbModal,
     private packageService: PackageService,
     private deliveryService: DeliveryService,
-    private datastoreService: DatastoreService,
   ) { }
 
   ngOnInit(): void {
@@ -75,11 +73,9 @@ export class CreatePackageComponent implements OnInit{
   selectDelivery(id: string) {
     if (!this.newPackageData) {
       this.errorMessage = 'No new package data provided';
-      console.log(this.errorMessage);
       return;
     }
     this.newPackageData.active_delivery_id = id;
-    console.log('active_delivery_id: ', id);
   }
 
   /** ==== CREATE PACKAGE:
@@ -103,10 +99,8 @@ export class CreatePackageComponent implements OnInit{
         console.log('response: ', response);
         if (response.code === OK) {
           this.successMessage = response.message as string;
-          console.log('successMessage: ', this.successMessage);
         } else {
           this.errorMessage = response.message as string;
-          console.log('errorMessage: ', this.errorMessage);
        }
      });
   }

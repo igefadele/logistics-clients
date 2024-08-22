@@ -1,11 +1,6 @@
-input {
-  width: 80%;
+input, select {
+  width: 100%;
   padding: 10px;
   margin-bottom: 20px;
-  font-size: 16px;
-}
-
-button {
-  padding: 10px 20px;
   font-size: 16px;
 }
